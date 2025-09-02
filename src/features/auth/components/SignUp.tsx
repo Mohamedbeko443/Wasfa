@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 /* eslint-disable import/order */
 /* eslint-disable no-console */
 /* eslint-disable prettier/prettier */
@@ -11,8 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpFormInputs } from "../types";
 import { signUpSchema } from "../schemas";
 
-import { Link } from "react-router-dom"
-
+import { Link } from "react-router-dom";
+import { authClasses } from "../utils";
 
 //todo API INTEGRATION 
 export default function SignUp() {
@@ -23,7 +25,6 @@ export default function SignUp() {
     } = useForm<SignUpFormInputs>({
         resolver: zodResolver(signUpSchema),
     });
-
     const onSubmit = (data: SignUpFormInputs) => {
         // Simulate API call
         return new Promise<void>((resolve) => {
@@ -33,12 +34,6 @@ export default function SignUp() {
             }, 1500);
         });
     };
-
-    const inputClass = "w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500";
-    const errorClass = "text-red-500 text-sm mt-1";
-    const labelClass = "block text-sm font-medium text-gray-700";
-    const buttonClass = "w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors";
-    const disabledButtonClass = "opacity-50 cursor-not-allowed";
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -54,7 +49,7 @@ export default function SignUp() {
                     <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <div className="w-full">
-                                <label className={labelClass} htmlFor="firstName">
+                                <label className={authClasses.labelClass} htmlFor="firstName">
                                     First Name
                                 </label>
                                 <input
@@ -62,14 +57,14 @@ export default function SignUp() {
                                     type="text"
                                     placeholder="First name"
                                     {...register("firstName")}
-                                    className={`${inputClass} ${errors.firstName ? 'border-red-500' : ''}`}
+                                    className={`${authClasses.inputClass} ${errors.firstName ? 'border-red-500' : ''}`}
                                 />
                                 {errors.firstName && (
-                                    <p className={errorClass}>{errors.firstName.message}</p>
+                                    <p className={authClasses.errorClass}>{errors.firstName.message}</p>
                                 )}
                             </div>
                             <div className="w-full">
-                                <label className={labelClass} htmlFor="lastName">
+                                <label className={authClasses.labelClass} htmlFor="lastName">
                                     Last Name
                                 </label>
                                 <input
@@ -77,27 +72,27 @@ export default function SignUp() {
                                     type="text"
                                     placeholder="Last name"
                                     {...register("lastName")}
-                                    className={`${inputClass} ${errors.lastName ? 'border-red-500' : ''}`}
+                                    className={`${authClasses.inputClass} ${errors.lastName ? 'border-red-500' : ''}`}
                                 />
                                 {errors.lastName && (
-                                    <p className={errorClass}>{errors.lastName.message}</p>
+                                    <p className={authClasses.errorClass}>{errors.lastName.message}</p>
                                 )}
                             </div>
                         </div>
                         <div>
-                            <label className={labelClass} htmlFor="email">
+                            <label className={authClasses.labelClass} htmlFor="email">
                                 Email Address
                             </label>
                             <input
                                 id="email"
                                 placeholder="Enter your email"
                                 {...register("email")}
-                                className={`${inputClass} ${errors.email ? 'border-red-500' : ''}`}
+                                className={`${authClasses.inputClass} ${errors.email ? 'border-red-500' : ''}`}
                             />
-                            {errors.email && <p className={errorClass}>{errors.email.message}</p>}
+                            {errors.email && <p className={authClasses.errorClass}>{errors.email.message}</p>}
                         </div>
                         <div>
-                            <label className={labelClass} htmlFor="password">
+                            <label className={authClasses.labelClass} htmlFor="password">
                                 Password
                             </label>
                             <input
@@ -105,12 +100,12 @@ export default function SignUp() {
                                 type="password"
                                 placeholder="Create a password"
                                 {...register("password")}
-                                className={`${inputClass} ${errors.password ? 'border-red-500' : ''}`}
+                                className={`${authClasses.inputClass} ${errors.password ? 'border-red-500' : ''}`}
                             />
-                            {errors.password && <p className={errorClass}>{errors.password.message}</p>}
+                            {errors.password && <p className={authClasses.errorClass}>{errors.password.message}</p>}
                         </div>
                         <div>
-                            <label className={labelClass} htmlFor="confirmPassword">
+                            <label className={authClasses.labelClass} htmlFor="confirmPassword">
                                 Confirm Password
                             </label>
                             <input
@@ -118,10 +113,10 @@ export default function SignUp() {
                                 type="password"
                                 placeholder="Confirm your password"
                                 {...register("confirmPassword")}
-                                className={`${inputClass} ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                                className={`${authClasses.inputClass} ${errors.confirmPassword ? 'border-red-500' : ''}`}
                             />
                             {errors.confirmPassword && (
-                                <p className={errorClass}>{errors.confirmPassword.message}</p>
+                                <p className={authClasses.errorClass}>{errors.confirmPassword.message}</p>
                             )}
                         </div>
                         <div className="pt-2 flex items-start space-x-2">
@@ -142,10 +137,10 @@ export default function SignUp() {
                                 </span>
                             </label>
                         </div>
-                        {errors.agreedToTerms && <p className={errorClass}>{errors.agreedToTerms.message}</p>}
+                        {errors.agreedToTerms && <p className={authClasses.errorClass}>{errors.agreedToTerms.message}</p>}
                         <button
                             type="submit"
-                            className={`${buttonClass} ${isSubmitting ? disabledButtonClass : ''}`}
+                            className={`${authClasses.buttonClass} ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Creating...' : 'Create Account'}

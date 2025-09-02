@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema } from "../schemas";
 import { LoginFormInputs } from "../types";
-
+import { authClasses } from "../utils";
 
 import { Link } from "react-router-dom"
 
@@ -39,12 +39,6 @@ export default function Login() {
         });
     };
 
-    const inputClass = "w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500";
-    const errorClass = "text-red-500 text-sm mt-1";
-    const labelClass = "block text-sm font-medium text-gray-700";
-    const buttonClass = "w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors";
-    const disabledButtonClass = "opacity-50 cursor-not-allowed";
-
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
             <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-4 sm:p-8">
@@ -58,7 +52,7 @@ export default function Login() {
                     </div>
                     <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            <label className={labelClass} htmlFor="email">
+                            <label className={authClasses.labelClass} htmlFor="email">
                                 Email Address
                             </label>
                             <input
@@ -66,12 +60,12 @@ export default function Login() {
                                 // type="email"
                                 placeholder="Enter your email"
                                 {...register("email")}
-                                className={`${inputClass} ${errors.email ? 'border-red-500' : ''}`}
+                                className={`${authClasses.inputClass} ${errors.email ? 'border-red-500' : ''}`}
                             />
-                            {errors.email && <p className={errorClass}>{errors.email.message}</p>}
+                            {errors.email && <p className={authClasses.errorClass}>{errors.email.message}</p>}
                         </div>
                         <div>
-                            <label className={labelClass} htmlFor="password">
+                            <label className={authClasses.labelClass} htmlFor="password">
                                 Password
                             </label>
                             <input
@@ -79,9 +73,9 @@ export default function Login() {
                                 type="password"
                                 placeholder="Enter your password"
                                 {...register("password")}
-                                className={`${inputClass} ${errors.password ? 'border-red-500' : ''}`}
+                                className={`${authClasses.inputClass} ${errors.password ? 'border-red-500' : ''}`}
                             />
-                            {errors.password && <p className={errorClass}>{errors.password.message}</p>}
+                            {errors.password && <p className={authClasses.errorClass}>{errors.password.message}</p>}
                         </div>
                         <div className="flex items-center justify-between pt-2">
                             <div className="flex items-center space-x-2">
@@ -101,7 +95,7 @@ export default function Login() {
                         </div>
                         <button
                             type="submit"
-                            className={`${buttonClass} ${isSubmitting ? disabledButtonClass : ''}`}
+                            className={`${authClasses.buttonClass} ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Signing In...' : 'Sign In'}
