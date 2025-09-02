@@ -1,21 +1,21 @@
-import { Route, Routes } from "react-router-dom";
+/* eslint-disable prettier/prettier */
 
-import IndexPage from "@/pages/index";
-import DocsPage from "@/pages/docs";
-import PricingPage from "@/pages/pricing";
-import BlogPage from "@/pages/blog";
-import AboutPage from "@/pages/about";
+import {Route , Routes} from "react-router-dom"
+
+import SignUp from "./features/auth/components/SignUp";
+import Login from "./features/auth/components/Login";
+
+
+
 
 function App() {
   return (
     <Routes>
-      <Route element={<IndexPage />} path="/" />
-      <Route element={<DocsPage />} path="/docs" />
-      <Route element={<PricingPage />} path="/pricing" />
-      <Route element={<BlogPage />} path="/blog" />
-      <Route element={<AboutPage />} path="/about" />
+      <Route element={<p>home</p>} path="/"  />
+      <Route element={<SignUp/>} path="/register"  />
+      <Route element={<Login/>} path="/login"  />
     </Routes>
-  );
+    );
 }
 
 export default App;
