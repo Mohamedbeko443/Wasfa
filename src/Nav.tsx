@@ -13,6 +13,10 @@ export default function Nav() {
                 <div style={{ backgroundColor: "yellow", padding: "6px", width: "50%", margin: "10px auto" }}>
                     <Link to={'/register'}>signUp page</Link>
                 </div>
+                
+                <div style={{ backgroundColor: "green", padding: "6px", width: "50%", margin: "10px auto" }}>
+                    <Link to={'/auth/email-confirmation'}>email confirmation page</Link>
+                </div>
             </div>
         </div>
     )

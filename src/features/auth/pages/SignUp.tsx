@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable prettier/prettier */
 /* eslint-disable import/order */
 /* eslint-disable no-console */
@@ -140,7 +140,7 @@ export default function SignUp() {
                         {errors.agreedToTerms && <p className={authClasses.errorClass}>{errors.agreedToTerms.message}</p>}
                         <button
                             type="submit"
-                            className={`${authClasses.buttonClass} ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
+                            className={`${authClasses.buttonClass} cursor-pointer ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Creating...' : 'Create Account'}

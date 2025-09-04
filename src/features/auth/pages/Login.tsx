@@ -95,7 +95,7 @@ export default function Login() {
                         </div>
                         <button
                             type="submit"
-                            className={`${authClasses.buttonClass} ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
+                            className={`${authClasses.buttonClass} cursor-pointer ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Signing In...' : 'Sign In'}
