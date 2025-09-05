@@ -23,3 +23,25 @@ export const loginSchema = z.object({
     password: z.string().min(1, { message: "Password is required" }),
     rememberMe: z.boolean().default(false).optional(),
 });
+
+
+export const EmailFormSchema = z.object({
+    email: z.string().email("Invalid email address"),
+});
+
+
+
+export const CodeFormSchema = z.object({
+    code: z.string().min(4, "Invalid code"),
+});
+
+
+export const PasswordFormSchema = z.object({
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z
+        .string()
+        .min(8, "Password must be at least 8 characters"),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+});

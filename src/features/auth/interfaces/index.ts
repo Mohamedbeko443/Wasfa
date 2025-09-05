@@ -15,3 +15,16 @@ export interface AuthClasses {
     buttonClass: string;
     disabledButtonClass: string;
 }
+
+
+export interface StepEmailProps {
+    onNext: () => void;
+}
+
+export interface StepCodeProps {
+    onNext: () => void;
+}
+
+export interface StepPasswordProps {
+    onDone: () => void;
+}

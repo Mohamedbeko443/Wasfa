@@ -17,6 +17,10 @@ export default function Nav() {
                 <div style={{ backgroundColor: "green", padding: "6px", width: "50%", margin: "10px auto" }}>
                     <Link to={'/auth/email-confirmation'}>email confirmation page</Link>
                 </div>
+
+                <div style={{ backgroundColor: "blue", padding: "6px", width: "50%", margin: "10px auto", color:"white" }}>
+                    <Link to={'/auth/forgot-password'}>forgot password page</Link>
+                </div>
             </div>
         </div>
     )
