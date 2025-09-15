@@ -33,6 +33,7 @@ export default function Login() {
     });
 
     const onSubmit = async (data: LoginFormInputs) => {
+        console.log(data);
         try {
             const response = await api.post(`/api/Account/Login`, data);
             console.log(response.data);
@@ -108,7 +109,7 @@ export default function Login() {
                         </div>
                         <button
                             type="submit"
-                            className={`${authClasses.buttonClass} cursor-pointer ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
+                            className={`${authClasses.buttonClass} ${!isSubmitting && "cursor-pointer"} ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Signing In...' : 'Sign In'}

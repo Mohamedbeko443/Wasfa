@@ -152,7 +152,7 @@ export default function SignUp() {
                         {errors.agreedToTerms && <p className={authClasses.errorClass}>{errors.agreedToTerms.message}</p>}
                         <button
                             type="submit"
-                            className={`${authClasses.buttonClass} cursor-pointer ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
+                            className={`${authClasses.buttonClass} ${!isSubmitting && "cursor-pointer"} ${isSubmitting ? authClasses.disabledButtonClass : ''}`}
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Creating...' : 'Create Account'}
