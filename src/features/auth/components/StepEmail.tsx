@@ -8,10 +8,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import { EmailFormSchema } from "../schemas";
-import { StepEmailProps } from "../interfaces";
 import { EmailFormSchemaType } from "../types";
+import api from "../../../common/api";
+import {addToast} from "@heroui/react";
 
-function StepEmail({ onNext }: StepEmailProps) {
+
+
+function StepEmail() {
+    
     const {
         register,
         handleSubmit,
@@ -21,9 +25,23 @@ function StepEmail({ onNext }: StepEmailProps) {
     });
 
     const onSubmit = async (data: EmailFormSchemaType) => {
-        console.log("Sending email to:", data.email);
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        onNext();
+        try {
+            const response = await api.post(`/api/Account/Reset-password-request?email=${data.email}`);
+            console.log(response.data);
+            addToast({
+                title: "Reset Password Request Successful!",
+                description: "please check your email to reset your password.",
+                color: "success",
+            });
+            
+        } catch (error: any) {
+            console.error(error);
+            addToast({
+                title: "Reset Password Request Failed!",
+                description: error.response?.data?.errors?.Account?.at(0) || "Something went wrong! please try again",
+                color: "danger",
+            });
+        }
     };
 
     return (

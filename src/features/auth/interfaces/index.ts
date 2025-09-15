@@ -1,10 +1,9 @@
 /* eslint-disable prettier/prettier */
 
-
 export interface AuthStore {
-    accessToken : string | null , 
-    setAccessToken : (newToken: string) => void,
-    removeAccessToken: ()=> void
+    accessToken: string | null,
+    setAccessToken: (newToken: string) => void,
+    removeAccessToken: () => void
 }
 
 

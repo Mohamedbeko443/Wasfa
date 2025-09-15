@@ -1,16 +1,63 @@
+/* eslint-disable no-console */
+/* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable prettier/prettier */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChefHat} from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams , useNavigate } from "react-router-dom";
+import api from "../../../common/api";
+import {Spinner} from "@heroui/react";
+import {addToast} from "@heroui/react";
+
 
 export default function EmailConfirmation() {
+    const navigate = useNavigate();
     const [isResending, setIsResending] = useState<boolean>(false);
     const [resendSuccess, setResendSuccess] = useState<boolean>(false);
     const [resendError, setResendError] = useState<string | null>(null);
+    const [loading , setLoading] = useState<boolean>(true);
+    const [searchParams] = useSearchParams();
 
+    const userId = searchParams.get("userId");
+    const token = searchParams.get("token");
+    
+
+    useEffect(() => {
+        if(!userId || !token) {
+            setLoading(false);
+            navigate("/");
+        }
+
+        const confirmEmail = async () => {
+            try {
+                await new Promise(resolve => setTimeout(resolve, 4000));
+                const response = await api.post(`/api/Account/Confirm-email?token=${token}&userId=${userId}`);
+
+                addToast({
+                    title: "Email Confirmation Successful!",
+                    description:response?.data || "Your email has been confirmed successfully.",
+                    color: "success",
+                });
+                
+                setLoading(false);
+                navigate("/login");
+            } catch (error: any) {
+                console.error(error);
+                setLoading(false);
+
+                addToast({
+                    title: "Email Confirmation Failed!",
+                    description: error.response?.data?.errors?.Account?.at(0) || "Something went wrong! please try again",
+                    color: "danger",
+                });
+            }
+        }
+        confirmEmail();
+    }, [userId, token]);
+
+    //todo resend email
     const handleResend = () => {
         setIsResending(true);
         setResendSuccess(false);
@@ -27,7 +74,7 @@ export default function EmailConfirmation() {
         }, 2000);
     };
 
-    const buttonClass = "w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors";
+    const buttonClass = "w-full py-2 px-4 border  border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors";
     const disabledButtonClass = "opacity-50 cursor-not-allowed";
 
     return (
@@ -47,10 +94,10 @@ export default function EmailConfirmation() {
                         <button
                             type="button"
                             onClick={handleResend}
-                            className={`${buttonClass} ${isResending ? disabledButtonClass : ''}`}
-                            disabled={isResending}
+                            className={`${buttonClass}  ${loading ? "cursor-not-allowed" : "cursor-pointer"} ${loading ? disabledButtonClass : ''}`}
+                            disabled={loading}
                         >
-                            {isResending ? 'Resending...' : 'Resend Email'}
+                            {loading ? <Spinner color="default" /> : 'Resend Email'}
                         </button>
                         {resendSuccess && (
                             <p className="text-green-500 text-sm mt-2">

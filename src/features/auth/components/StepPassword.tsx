@@ -1,3 +1,4 @@
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-sort-props */
@@ -7,27 +8,45 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PasswordFormSchema } from "../schemas";
-import { StepPasswordProps } from "../interfaces";
 import { PasswordFormSchemaType } from "../types";
+import api from "../../../common/api";
+import {addToast} from "@heroui/react";
 
 
+import { useSearchParams, useNavigate } from "react-router-dom";
 
-function StepPassword({ onDone }: StepPasswordProps) {
+
+function StepPassword() {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get("token");
+    const userId = searchParams.get("userId");
     const {
         handleSubmit,
         register,
         formState: { errors, isSubmitting },
-        reset,
     } = useForm<PasswordFormSchemaType>({
         resolver: zodResolver(PasswordFormSchema),
     });
 
     const onSubmit = async (data: PasswordFormSchemaType) => {
-        console.log("Resetting password:", data.password);
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        alert("Password has been reset successfully!");
-        reset();
-        onDone();
+        try {
+            const response = await api.post(`/api/Account/Reset-password?token=${token}&userId=${userId}&newPassword=${data.password}` );
+            console.log(response.data);
+            addToast({
+                title: "Password Reset Successful!",
+                description: "Your password has been reset successfully.",
+                color: "success",
+            });
+            navigate("/login");
+        } catch (error:any) {
+            console.error(error);
+            addToast({
+                title: "Password Reset Failed!",
+                description: error.response?.data?.errors?.Account?.at(0) || "Something went wrong! please try again",
+                color: "danger",
+            });
+        }
     };
 
     return (

@@ -2,18 +2,34 @@
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChefHat } from "lucide-react";
 import StepEmail from "../components/StepEmail";
 
-import StepCode from "../components/StepCode";
 import StepPassword from "../components/StepPassword";
+import { useSearchParams } from "react-router-dom";
+import {Spinner} from "@heroui/react";
+
 
 const ForgotPassword = () => {
     const [step, setStep] = useState(1);
+    const [loading , setLoading] = useState<boolean>(false)
+    const [searchParams] = useSearchParams();
+    const token =   searchParams.get("token");
+    const userId =   searchParams.get("userId");
 
-    const goNext = () => setStep((prev) => prev + 1);
-    const goReset = () => setStep(1);
+    
+    const simulate = async ()=>{
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 4000));
+        setLoading(false);
+        setStep(2);
+    }
+
+    useEffect(() => {
+        if (!token || !userId) return
+        simulate();
+    }, [token, userId])
 
     return (
         <div className="flex items-center justify-center min-h-screen p-4 bg-gray-50">
@@ -23,14 +39,12 @@ const ForgotPassword = () => {
                 </div>
                 <h1 className="text-2xl font-semibold mb-1">Forgot Password</h1>
                 <p className="text-default-500 mb-6 text-center text-sm">
-                    {step === 1 && "Enter your email to receive a password reset code."}
-                    {step === 2 && "Enter the 4-digit code you received."}
-                    {step === 3 && "Enter your new password."}
+                    {step === 1 && "Enter your email to receive an email to reset your password."}
+                    {step === 2 && "Enter your new password."}
                 </p>
-
-                {step === 1 && <StepEmail onNext={goNext} />}
-                {step === 2 && <StepCode onNext={goNext} />}
-                {step === 3 && <StepPassword onDone={goReset} />}
+                {loading && <Spinner color="warning" size="lg"/> }
+                {step === 1 && !loading &&  <StepEmail />}
+                {step === 2 && <StepPassword />}
             </div>
         </div>
     );

@@ -1,3 +1,4 @@
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable prettier/prettier */
 
 /* eslint-disable prettier/prettier */
@@ -13,10 +14,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpFormInputs } from "../types";
 import { signUpSchema } from "../schemas";
 
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 import { authClasses } from "../utils";
 
-//todo API INTEGRATION 
+import api from "../../../common/api"
+
+import {addToast} from "@heroui/react";
+
+
 export default function SignUp() {
     const {
         register,
@@ -25,14 +30,25 @@ export default function SignUp() {
     } = useForm<SignUpFormInputs>({
         resolver: zodResolver(signUpSchema),
     });
-    const onSubmit = (data: SignUpFormInputs) => {
-        // Simulate API call
-        return new Promise<void>((resolve) => {
-            setTimeout(() => {
-                console.log("Form submitted:", data);
-                resolve();
-            }, 1500);
-        });
+
+    const onSubmit = async (data: SignUpFormInputs) => {
+        const apiData = {...data , role:"Admin"}
+        try {
+            const response = await api.post(`/api/Account/Register`, apiData);
+            console.log(response.data);
+            addToast({
+                title: "Registration Successful!",
+                description: "Please check your email to verify your account before signing in.",
+                color: "success",
+            });
+        } catch (error: any) {
+            console.error(error);
+            addToast({
+                title: "Registration Failed!",
+                description: error.response?.data?.errors?.Account[0] || "something went wrong please try again",
+                color: "danger",
+            });
+        }
     };
 
     return (
@@ -47,37 +63,20 @@ export default function SignUp() {
                         <p className="text-gray-500">Create your account to start cooking</p>
                     </div>
                     <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <div className="w-full">
-                                <label className={authClasses.labelClass} htmlFor="firstName">
-                                    First Name
-                                </label>
-                                <input
-                                    id="firstName"
-                                    type="text"
-                                    placeholder="First name"
-                                    {...register("firstName")}
-                                    className={`${authClasses.inputClass} ${errors.firstName ? 'border-red-500' : ''}`}
-                                />
-                                {errors.firstName && (
-                                    <p className={authClasses.errorClass}>{errors.firstName.message}</p>
-                                )}
-                            </div>
-                            <div className="w-full">
-                                <label className={authClasses.labelClass} htmlFor="lastName">
-                                    Last Name
-                                </label>
-                                <input
-                                    id="lastName"
-                                    type="text"
-                                    placeholder="Last name"
-                                    {...register("lastName")}
-                                    className={`${authClasses.inputClass} ${errors.lastName ? 'border-red-500' : ''}`}
-                                />
-                                {errors.lastName && (
-                                    <p className={authClasses.errorClass}>{errors.lastName.message}</p>
-                                )}
-                            </div>
+                        <div>
+                            <label className={authClasses.labelClass} htmlFor="username">
+                                Username
+                            </label>
+                            <input
+                                id="username"
+                                type="text"
+                                placeholder="Enter your username"
+                                {...register("username")}
+                                className={`${authClasses.inputClass} ${errors.username ? 'border-red-500' : ''}`}
+                            />
+                            {errors.username && (
+                                <p className={authClasses.errorClass}>{errors.username.message}</p>
+                            )}
                         </div>
                         <div>
                             <label className={authClasses.labelClass} htmlFor="email">
@@ -90,6 +89,19 @@ export default function SignUp() {
                                 className={`${authClasses.inputClass} ${errors.email ? 'border-red-500' : ''}`}
                             />
                             {errors.email && <p className={authClasses.errorClass}>{errors.email.message}</p>}
+                        </div>
+                        <div>
+                            <label className={authClasses.labelClass} htmlFor="phoneNumber">
+                                Phone Number
+                            </label>
+                            <input
+                                id="phoneNumber"
+                                type="tel"
+                                placeholder="Enter your phone number"
+                                {...register("phoneNumber")}
+                                className={`${authClasses.inputClass} ${errors.phoneNumber ? 'border-red-500' : ''}`}
+                            />
+                            {errors.phoneNumber && <p className={authClasses.errorClass}>{errors.phoneNumber.message}</p>}
                         </div>
                         <div>
                             <label className={authClasses.labelClass} htmlFor="password">

@@ -8,10 +8,8 @@ import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'ax
 import useAuthStore from '@/features/auth/store/auth';
 import { OriginalRequest } from '../interfaces';
 
-//TODO ADD THE BASE
-const base: string = 'BASE_URL';
 
-
+const base = import.meta.env.VITE_BASE_URL;
 
 const api: AxiosInstance = axios.create({
     baseURL: base,

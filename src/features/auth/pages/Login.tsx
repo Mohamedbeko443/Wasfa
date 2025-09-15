@@ -1,3 +1,4 @@
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable prettier/prettier */
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
@@ -14,13 +15,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schemas";
 import { LoginFormInputs } from "../types";
 import { authClasses } from "../utils";
+import api from "../../../common/api";
+import { Link , useNavigate} from "react-router-dom";
+import {addToast} from "@heroui/react";
 
-import { Link } from "react-router-dom"
 
 
-//todo API INTEGRATION
-//TODO FORGOT PASSWORD PAGE
+
 export default function Login() {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -29,14 +32,24 @@ export default function Login() {
         resolver: zodResolver(loginSchema),
     });
 
-    const onSubmit = (data: LoginFormInputs) => {
-        // Simulate API call
-        return new Promise<void>((resolve) => {
-            setTimeout(() => {
-                console.log("Login submitted:", data);
-                resolve();
-            }, 1500);
-        });
+    const onSubmit = async (data: LoginFormInputs) => {
+        try {
+            const response = await api.post(`/api/Account/Login`, data);
+            console.log(response.data);
+            addToast({
+                title: "Login Successful!",
+                description: "You have successfully logged in.",
+                color: "success",
+            });
+            navigate("/");
+        } catch (error: any) {
+            console.error(error);
+            addToast({
+                title: "Login Failed!",
+                description: error.response?.data?.errors?.Account?.at(0) || "Something went wrong! please try again",
+                color: "danger",
+            });
+        }
     };
 
     return (
