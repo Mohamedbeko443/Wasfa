@@ -30,21 +30,21 @@ export default function Header()  {
                         </NavLink>
                     </div>
 
-                    <div className="hidden items-center space-x-5 md:flex">
+                    <div className="hidden items-center space-x-5 lg:flex">
                         <NavigationItems />
                         <SearchBar />
                     </div>
 
-                    <div className="md:hidden">
+                    <div className="lg:hidden">
                         <MobileMenuButton isOpen={isOpen} onClick={toggleMenu} />
                     </div>
                 </div>
 
                 <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out md:hidden ${
+                    className={`overflow-hidden transition-all duration-300 ease-in-out lg:hidden ${
                         isOpen ? "max-h-96" : "max-h-0"
                     }`}>
-                    <div className="mt-4 md:hidden">
+                    <div className="mt-4 lg:hidden">
                         <NavigationItems isMobile onItemClick={toggleMenu} />
                         <SearchBar isMobile />
                     </div>
@@ -53,5 +53,3 @@ export default function Header()  {
         </header>
     );
 };
-
-
