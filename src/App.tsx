@@ -12,6 +12,7 @@ import Login from "./features/auth/pages/Login";
 import EmailConfirmation from "./features/auth/pages/EmailConfirmation";
 import ForgotPassword from "./features/auth/pages/ForgotPassword";
 import MainLayout from "./common/layout/MainLayout";
+import Home from "./features/home/pages/index"
 
 
 
@@ -22,7 +23,7 @@ function App() {
     <ToastProvider/>
     <Routes>
       <Route element={<MainLayout />}>
-        <Route index element={<div>Home Page</div>} />
+        <Route index element={<Home />} />
         <Route path="/test" element={<div>Test Page</div>} />
       </Route>
       <Route element={<SignUp/>} path="/register"  />

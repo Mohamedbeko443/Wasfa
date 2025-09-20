@@ -83,7 +83,7 @@ export default function Footer() {
 
                 {/* Divider and Copyright */}
                 <div className="mt-12 border-t border-gray-800 pt-6 text-center">
-                    <p className="text-sm text-gray-500">© 2024 Wasfa!. All rights reserved.</p>
+                    <p className="text-sm text-gray-500">© 2025 Wasfa!. All rights reserved.</p>
                 </div>
             </div>
         </footer>
