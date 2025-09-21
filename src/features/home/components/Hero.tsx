@@ -46,7 +46,7 @@ export default function HeroSection() {
                     </p>
 
                     <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row">
-                        <button className="transform rounded-full bg-white px-8 py-4 font-semibold text-lg text-orange-500 shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
+                        <button className="transform rounded-full cursor-pointer bg-white px-8 py-4 font-semibold text-lg text-orange-500 shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
                             Get Started Free
                         </button>
                         <div className="flex flex-col items-center gap-1">

@@ -1,11 +1,17 @@
 /* eslint-disable prettier/prettier */
 
-import Hero from "../components/Hero"
+import HeroSection from "../components/Hero"
+import RecipeFilter from "../../../common/components/recipeFilter/RecipeFilter"
 
 export default function index() {
     return (
         <div>
-            <Hero />
+            <HeroSection />
+            <section className="py-8">
+                <div className="container mx-auto px-4">
+                    <RecipeFilter />
+                </div>
+            </section>
         </div>
     )
 }

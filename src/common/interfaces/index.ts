@@ -8,7 +8,7 @@ export interface OriginalRequest extends InternalAxiosRequestConfig {
 }
 
 // Header Component Interfaces
-export interface HeaderProps {}
+export interface HeaderProps { }
 
 export interface SearchBarProps {
     isMobile?: boolean;
@@ -29,4 +29,13 @@ export interface NavItem {
     path: string;
     icon: React.ComponentType<LucideProps>;
     isButton?: boolean;
+}
+
+export interface CustomSelectProps {
+    id: string;
+    value: string | number;
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    options: readonly (string | number)[];
+    label?: string;
+    icon?: React.ReactNode;
 }
