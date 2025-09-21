@@ -4,8 +4,8 @@
 /* eslint-disable prettier/prettier */
 import  { useState } from 'react';
 import { Filter, ArrowUpNarrowWide, ArrowDownWideNarrow } from 'lucide-react';
-import CustomSelect from '../customSelect/CustomSelect';
 import { SortByType, SortOrderType, FilterByType, ItemsPerPageType } from '../../types/index';
+import CustomSelect from '../customSelect/CustomSelect';
 
 
 
