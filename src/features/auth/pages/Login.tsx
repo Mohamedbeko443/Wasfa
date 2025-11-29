@@ -17,13 +17,15 @@ import { LoginFormInputs } from "../types";
 import { authClasses } from "../utils";
 import api from "../../../common/api";
 import { Link , useNavigate} from "react-router-dom";
-import {addToast} from "@heroui/react";
+import { addToast } from "@heroui/react";
+import useAuthStore from "../store/auth";
 
 
 
 
 export default function Login() {
     const navigate = useNavigate();
+    const { setAccessToken } = useAuthStore();
     const {
         register,
         handleSubmit,
@@ -33,13 +35,14 @@ export default function Login() {
     });
 
     const onSubmit = async (data: LoginFormInputs) => {
-        console.log(data);
         try {
-            const response = await api.post(`/api/Account/Login`, data);
+            const response = await api.post(`/auth/login`, data);
             console.log(response.data);
+            setAccessToken(response.data.token);
+            
             addToast({
                 title: "Login Successful!",
-                description: "You have successfully logged in.",
+                description: response.data?.message || "welcome back!",
                 color: "success",
             });
             navigate("/");
@@ -47,7 +50,7 @@ export default function Login() {
             console.error(error);
             addToast({
                 title: "Login Failed!",
-                description: error.response?.data?.errors?.Account?.at(0) || "Something went wrong! please try again",
+                description: error.response?.data?.message || error?.response?.data?.errors[0] || "Something went wrong! please try again",
                 color: "danger",
             });
         }

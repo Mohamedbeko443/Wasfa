@@ -1,47 +1,45 @@
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable no-console */
 /* eslint-disable import/order */
 /* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-sort-props */
-/* eslint-disable padding-line-between-statements */
-/* eslint-disable prettier/prettier */
-import { useEffect, useState } from "react";
-import { ChefHat} from "lucide-react";
-import { Link, useSearchParams , useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react"; // Import useRef
+import { ChefHat } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../../common/api";
-import {Spinner} from "@heroui/react";
-import {addToast} from "@heroui/react";
-
+import { Spinner, addToast } from "@heroui/react";
+import { AxiosError } from "axios";
 
 export default function EmailConfirmation() {
     const navigate = useNavigate();
-    const [isResending, setIsResending] = useState<boolean>(false);
-    const [resendSuccess, setResendSuccess] = useState<boolean>(false);
-    const [resendError, setResendError] = useState<string | null>(null);
-    const [loading , setLoading] = useState<boolean>(true);
-    const [searchParams] = useSearchParams();
-
-    const userId = searchParams.get("userId");
-    const token = searchParams.get("token");
+    const [loading, setLoading] = useState<boolean>(true);
+    const { userId, token } = useParams();
     
+    // Track if we have already attempted verification
+    const verificationAttempted = useRef(false);
 
     useEffect(() => {
-        if(!userId || !token) {
-            setLoading(false);
-            navigate("/");
-        }
+        // If we already tried to verify, stop here.
+        if (verificationAttempted.current) return;
+        
+        // Mark as attempted immediately
+        verificationAttempted.current = true;
 
         const confirmEmail = async () => {
+            if (!userId || !token) return; // Safety check
+
             try {
-                await new Promise(resolve => setTimeout(resolve, 4000));
-                const response = await api.post(`/api/Account/Confirm-email?token=${token}&userId=${userId}`);
+                await new Promise(resolve => setTimeout(resolve, 4000));                
+                const response = await api.get(`/auth/users/${userId}/verify/${token}`);
 
                 addToast({
                     title: "Email Confirmation Successful!",
-                    description:response?.data || "Your email has been confirmed successfully.",
+                    description: response?.data?.message || "Your email has been confirmed successfully.",
                     color: "success",
                 });
-                
+
                 setLoading(false);
+                //!
                 navigate("/login");
             } catch (error: any) {
                 console.error(error);
@@ -49,29 +47,41 @@ export default function EmailConfirmation() {
 
                 addToast({
                     title: "Email Confirmation Failed!",
-                    description: error.response?.data?.errors?.Account?.at(0) || "Something went wrong! please try again",
+                    description: error.response?.data?.message || "Something went wrong! please try again",
                     color: "danger",
                 });
             }
-        }
+        };
+
         confirmEmail();
-    }, [userId, token]);
+    }, [userId, token, navigate]); 
 
-    //todo resend email
-    const handleResend = () => {
-        setIsResending(true);
-        setResendSuccess(false);
-        setResendError(null);
-
-        setTimeout(() => {
-            const success = Math.random() > 0.3; 
-            if (success) {
-                setResendSuccess(true);
-            } else {
-                setResendError("Failed to resend the email. Please try again later.");
+    
+    
+    const handleResend = async () => {
+        setLoading(true);
+        try{
+            const res = await api.post(`/auth/users/${userId}/resend-verification-token`);
+            addToast({
+                title: "Email Confirmation Resent",
+                description:  res.data?.message || "your email confirmation resent successfully.",
+                color: "success"
+            })
+        }
+        catch (err: unknown)
+        {
+            if(err instanceof AxiosError)
+            {
+                addToast({
+                    title: "Email Confirmation Error",
+                    description: err?.response?.data?.message || "something went wrong please try again later.",
+                    color: "danger"
+                })
             }
-            setIsResending(false);
-        }, 2000);
+        }
+        finally{
+            setLoading(false)
+        }
     };
 
     const buttonClass = "w-full py-2 px-4 border  border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors";
@@ -99,16 +109,6 @@ export default function EmailConfirmation() {
                         >
                             {loading ? <Spinner color="default" /> : 'Resend Email'}
                         </button>
-                        {resendSuccess && (
-                            <p className="text-green-500 text-sm mt-2">
-                                Confirmation email has been resent successfully!
-                            </p>
-                        )}
-                        {resendError && (
-                            <p className="text-red-500 text-sm mt-2">
-                                {resendError}
-                            </p>
-                        )}
                     </div>
                     <div className="text-center text-sm text-gray-500 mt-4">
                         Already confirmed?{" "}

@@ -3,14 +3,11 @@ import { z } from "zod";
 
 
 export const signUpSchema = z.object({
-    username: z.string().trim().min(3, { message: "Username must be at least 3 characters" }).max(20, { message: "Username must be at most 20 characters" })
+    username: z.string().trim().min(2, { message: "Username must be at least 2 characters" }).max(20, { message: "Username must be at most 20 characters" })
     .regex(/^\S*$/, { message: "username cannot contain spaces" }),
 
-    email: z.string().trim().min(1, { message: "Email is required" }).email("Email is invalid"),
+    email: z.string().trim().min(2, { message: "Email is required" }).email("Email is invalid"),
 
-    phoneNumber: z.string().trim()
-        .length(11, { message: "Phone number must be exactly 11 digits" })
-        .regex(/^(010|011|012|015)\d{8}$/, { message: "Phone number must start with 010, 011, 012, or 015 followed by 8 digits" }),
 
     password: z.string().trim()
         .min(8, { message: "Password must be at least 8 characters" })

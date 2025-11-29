@@ -10,16 +10,12 @@
 import { ChefHat } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { SignUpFormInputs } from "../types";
 import { signUpSchema } from "../schemas";
-
 import { Link  } from "react-router-dom";
 import { authClasses } from "../utils";
-
 import api from "../../../common/api"
-
-import {addToast} from "@heroui/react";
+import { addToast } from "@heroui/react";
 
 
 export default function SignUp() {
@@ -32,20 +28,19 @@ export default function SignUp() {
     });
 
     const onSubmit = async (data: SignUpFormInputs) => {
-        const apiData = {...data , role:"Admin"}
         try {
-            const response = await api.post(`/api/Account/Register`, apiData);
+            const response = await api.post("/auth/register", data);
             console.log(response.data);
             addToast({
                 title: "Registration Successful!",
-                description: "Please check your email to verify your account before signing in.",
+                description: "Please check your email to verify your account.",
                 color: "success",
             });
         } catch (error: any) {
             console.error(error);
             addToast({
                 title: "Registration Failed!",
-                description: error.response?.data?.errors?.Account[0] || "something went wrong please try again",
+                description: error.response?.data?.message || "something went wrong please try again",
                 color: "danger",
             });
         }
@@ -89,19 +84,6 @@ export default function SignUp() {
                                 className={`${authClasses.inputClass} ${errors.email ? 'border-red-500' : ''}`}
                             />
                             {errors.email && <p className={authClasses.errorClass}>{errors.email.message}</p>}
-                        </div>
-                        <div>
-                            <label className={authClasses.labelClass} htmlFor="phoneNumber">
-                                Phone Number
-                            </label>
-                            <input
-                                id="phoneNumber"
-                                type="tel"
-                                placeholder="Enter your phone number"
-                                {...register("phoneNumber")}
-                                className={`${authClasses.inputClass} ${errors.phoneNumber ? 'border-red-500' : ''}`}
-                            />
-                            {errors.phoneNumber && <p className={authClasses.errorClass}>{errors.phoneNumber.message}</p>}
                         </div>
                         <div>
                             <label className={authClasses.labelClass} htmlFor="password">

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable prettier/prettier */
 
-import {CustomSelectProps} from "../../interfaces/index"
+import { CustomSelectProps } from "../../interfaces/index"
 
 
 

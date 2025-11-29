@@ -24,11 +24,11 @@ function App() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
-        <Route path="/test" element={<div>Test Page</div>} />
       </Route>
+      
       <Route element={<SignUp/>} path="/register"  />
       <Route element={<Login/>} path="/login"  />
-      <Route element={<EmailConfirmation/>} path="/auth/email-confirmation"  />
+      <Route element={<EmailConfirmation/>} path="/users/:userId/verify/:token"  />
       <Route element={<ForgotPassword/>} path="/auth/forgot-password"  />
     </Routes>
     </HeroUIProvider>
