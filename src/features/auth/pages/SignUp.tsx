@@ -1,12 +1,3 @@
-/* eslint-disable padding-line-between-statements */
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable prettier/prettier */
-/* eslint-disable import/order */
-/* eslint-disable no-console */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-sort-props */
-
 import { ChefHat } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,6 +7,7 @@ import { Link  } from "react-router-dom";
 import { authClasses } from "../utils";
 import api from "../../../common/api"
 import { addToast } from "@heroui/react";
+import { AxiosError } from "axios";
 
 
 export default function SignUp() {
@@ -29,20 +21,23 @@ export default function SignUp() {
 
     const onSubmit = async (data: SignUpFormInputs) => {
         try {
-            const response = await api.post("/auth/register", data);
+            const response = await api.post<{message: string}>("/auth/register", data);
             console.log(response.data);
             addToast({
                 title: "Registration Successful!",
                 description: "Please check your email to verify your account.",
                 color: "success",
             });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(error);
-            addToast({
+            if(error instanceof AxiosError)
+            {
+                addToast({
                 title: "Registration Failed!",
                 description: error.response?.data?.message || "something went wrong please try again",
                 color: "danger",
             });
+            }
         }
     };
 

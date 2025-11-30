@@ -1,17 +1,6 @@
-/* eslint-disable padding-line-between-statements */
-/* eslint-disable prettier/prettier */
-/* eslint-disable import/order */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-console */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-sort-props */
-
-
 import { ChefHat } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { loginSchema } from "../schemas";
 import { LoginFormInputs } from "../types";
 import { authClasses } from "../utils";

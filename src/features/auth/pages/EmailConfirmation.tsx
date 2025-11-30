@@ -1,8 +1,3 @@
-/* eslint-disable react/jsx-sort-props */
-/* eslint-disable padding-line-between-statements */
-/* eslint-disable no-console */
-/* eslint-disable import/order */
-/* eslint-disable prettier/prettier */
 import { useEffect, useState, useRef } from "react"; // Import useRef
 import { ChefHat } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -13,7 +8,10 @@ import { AxiosError } from "axios";
 export default function EmailConfirmation() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(true);
-    const { userId, token } = useParams();
+    const { userId, token } = useParams<{userId: string , token: string}>();
+    const [time , setTime] = useState<number>(30);
+    const isWorking = time > 0 || loading ; 
+    
     
     // Track if we have already attempted verification
     const verificationAttempted = useRef(false);
@@ -30,7 +28,7 @@ export default function EmailConfirmation() {
 
             try {
                 await new Promise(resolve => setTimeout(resolve, 4000));                
-                const response = await api.get(`/auth/users/${userId}/verify/${token}`);
+                const response = await api.get<{message: string}>(`/auth/users/${userId}/verify/${token}`);
 
                 addToast({
                     title: "Email Confirmation Successful!",
@@ -41,27 +39,38 @@ export default function EmailConfirmation() {
                 setLoading(false);
                 //!
                 navigate("/login");
-            } catch (error: any) {
+            } catch (error: unknown) {
                 console.error(error);
                 setLoading(false);
-
-                addToast({
+                if(error instanceof AxiosError)
+                {
+                    addToast({
                     title: "Email Confirmation Failed!",
                     description: error.response?.data?.message || "Something went wrong! please try again",
                     color: "danger",
                 });
+                }
             }
         };
 
         confirmEmail();
     }, [userId, token, navigate]); 
 
-    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTime(prev => prev > 0 ? prev - 1 : prev );
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        }
+    },[])
     
     const handleResend = async () => {
         setLoading(true);
+        setTime(30);
         try{
-            const res = await api.post(`/auth/users/${userId}/resend-verification-token`);
+            const res = await api.post<{message: string}>(`/auth/users/${userId}/resend-verification-token`);
             addToast({
                 title: "Email Confirmation Resent",
                 description:  res.data?.message || "your email confirmation resent successfully.",
@@ -104,11 +113,12 @@ export default function EmailConfirmation() {
                         <button
                             type="button"
                             onClick={handleResend}
-                            className={`${buttonClass}  ${loading ? "cursor-not-allowed" : "cursor-pointer"} ${loading ? disabledButtonClass : ''}`}
-                            disabled={loading}
+                            className={`${buttonClass}  ${isWorking ? "cursor-not-allowed" : "cursor-pointer"} ${isWorking ? disabledButtonClass : ''}`}
+                            disabled={isWorking}
                         >
                             {loading ? <Spinner color="default" /> : 'Resend Email'}
                         </button>
+                        {time > 0 && <span className="text-orange-500 font-extrabold mt-2 block">{`00:${time} second`}</span>}
                     </div>
                     <div className="text-center text-sm text-gray-500 mt-4">
                         Already confirmed?{" "}
