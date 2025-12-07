@@ -1,9 +1,20 @@
+
+type LevelType = "Easy" | "Intermediate" | "Hard"
+
+
 export interface Recipe {
-  id: number;
-  image: string;
+  id: string;
+  image: {
+    url: string;
+    public_id: string;
+  };
+  name: string;
   rating: number;
-  title: string;
   description: string;
   cookTime: number;
   servings: number;
+  ingredients: string[];
+  instructions: string[];
+  level: LevelType;
+  premium: boolean;
 }

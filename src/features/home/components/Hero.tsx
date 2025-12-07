@@ -2,6 +2,7 @@
 /* eslint-disable prettier/prettier */
 
 import { ChefHat, Star, Search, CookingPot } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // For better organization, we can define the feature data in an array
 const featureData = [
@@ -23,6 +24,7 @@ const featureData = [
 ];
 
 export default function HeroSection() {
+    const navigate = useNavigate();
     return (
         <section className="relative bg-gradient-to-r from-orange-500 to-red-500 text-white font-sans">
             {/* Darkening Overlay */}
@@ -34,7 +36,7 @@ export default function HeroSection() {
                 {/* Main Content Area */}
                 <div className="flex flex-col items-center">
                     <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/20">
-                        <ChefHat className="h-8 w-8 text-white" />
+                        <ChefHat  className="h-14 w-14 text-white" />
                     </div>
 
                     <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
@@ -46,7 +48,7 @@ export default function HeroSection() {
                     </p>
 
                     <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row">
-                        <button className="transform rounded-full cursor-pointer bg-white px-8 py-4 font-semibold text-lg text-orange-500 shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
+                        <button onClick={() => navigate("/login") } className="transform rounded-full cursor-pointer bg-white px-8 py-4 font-semibold text-lg text-orange-500 shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-gray-100">
                             Get Started Free
                         </button>
                         <div className="flex flex-col items-center gap-1">
