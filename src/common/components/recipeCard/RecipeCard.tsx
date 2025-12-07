@@ -9,8 +9,12 @@ interface RecipeCardProps {
 export default function RecipeCard({ recipe }: RecipeCardProps) {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 ease-in-out">
-      <div className="relative">
-        <img alt={recipe.name} className="w-full h-48 object-cover" src={recipe.image.url} />
+      <div className="relative w-full aspect-[4/3]">
+        <img
+          src={recipe.image.url}
+          alt={recipe.name}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
         <div className="absolute top-2 right-2 bg-yellow-400 text-white px-2 py-1 rounded-full text-sm font-bold flex items-center gap-1">
           <Star className="w-4 h-4" />
           <span>{recipe.rating}</span>
