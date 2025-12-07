@@ -4,10 +4,16 @@ import { Recipe } from '../../types/Recipe';
 import { useRecipes } from '@/features/home/hooks/useRecipes';
 import RecipeCardSkeleton from '../recipeSkeleton/RecipeCardSkeleton';
 import RecipeCardError from '../recipeErrorPage/RecipeCardError';
+import { RecipeParams } from '@/features/home/services';
+import NoRecipesFound from '../recipeNotFound/NoRecipesFound';
 
-export default function RecipeGallery() {
+interface RecipeGalleryProps {
+    queryParams: RecipeParams;
+}
 
-    const { data, isError, isPending , refetch } = useRecipes();
+export default function RecipeGallery({ queryParams }: RecipeGalleryProps) {
+
+    const { data, isError, isPending , refetch } = useRecipes(queryParams);
 
     
     if (isError) return (
@@ -34,6 +40,12 @@ export default function RecipeGallery() {
                         ))}
                     </div>
                 )}
+
+                {
+                    data?.recipes?.length === 0 && (
+                        <NoRecipesFound />
+                    )
+                }
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
                     {data?.recipes?.map((recipe: Recipe) => (

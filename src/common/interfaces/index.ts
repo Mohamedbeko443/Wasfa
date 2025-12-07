@@ -31,11 +31,16 @@ export interface NavItem {
     isButton?: boolean;
 }
 
+type SelectOption = {
+    label: string;
+    value: string | number;
+}
+
 export interface CustomSelectProps {
     id: string;
     value: string | number;
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    options: readonly (string | number)[];
+    options: readonly SelectOption[];  
     label?: string;
     icon?: React.ReactNode;
 }

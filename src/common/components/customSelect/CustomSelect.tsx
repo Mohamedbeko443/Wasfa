@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-sort-props */
-/* eslint-disable prettier/prettier */
-
 import { CustomSelectProps } from "../../interfaces/index"
 
 
@@ -18,7 +15,7 @@ function CustomSelect({ id, value, onChange, options, label, icon }: CustomSelec
                 className="block w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             >
                 {options.map((option) => (
-                    <option key={option} value={option}>{typeof option === 'number' ? `${option} per page` : option}</option>
+                    <option key={option.value} value={option.value}>{typeof option.value === 'number' ? `${option.label} per page` : option.label}</option>
                 ))}
             </select>
         </div>
