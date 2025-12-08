@@ -9,6 +9,7 @@ import ForgotPassword from "./features/auth/pages/ForgotPassword";
 import MainLayout from "./common/layout/MainLayout";
 import Home from "./features/home/pages/index"
 import ResetPassword from './features/auth/pages/ResetPassword';
+import RecipePage from './features/recipe/pages/RecipePage';
 
 
 
@@ -18,8 +19,9 @@ function App() {
     <HeroUIProvider>
     <ToastProvider/>
     <Routes>
-      <Route element={<MainLayout />}>
-        <Route index element={<Home />} />
+      <Route path='/' element={<MainLayout />}>
+        <Route index element={<Home />} /> 
+        <Route path='recipe/:id' element={<RecipePage/>} /> 
       </Route>
 
       <Route element={<SignUp/>} path="/register"  />

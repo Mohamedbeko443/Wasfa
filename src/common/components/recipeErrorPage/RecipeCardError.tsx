@@ -16,7 +16,7 @@ export default function RecipeCardError({ onRetry }: RecipeCardErrorProps) {
       </h3>
 
       <p className="text-gray-600 text-lg mb-4">
-        We couldn’t load this recipe card. Please try again.
+        We couldn’t load  recipes . Please try again.
       </p>
 
       {onRetry && ( 

@@ -1,6 +1,5 @@
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable prettier/prettier */
 import { Search, ChefHat, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const steps = [
     {
@@ -24,6 +23,7 @@ const steps = [
 ];
 
 export default function HowItWorks() {
+    const navigate = useNavigate();
     return (
         <div className="bg-white py-20">
             <div className="container mx-auto px-6 text-center">
@@ -47,7 +47,7 @@ export default function HowItWorks() {
                     </div>
                 </div>
 
-                <button className="mt-16 bg-orange-500 cursor-pointer text-white font-bold py-3 px-8 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+                <button onClick={() => navigate('/search')} className="mt-16 bg-orange-500 cursor-pointer text-white font-bold py-3 px-8 rounded-lg hover:bg-orange-600 transition-colors duration-300">
                     Start Cooking Today
                 </button>
             </div>

@@ -1,6 +1,3 @@
-/* eslint-disable import/order */
-/* eslint-disable react/jsx-sort-props */
-/* eslint-disable prettier/prettier */
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChefHat } from "lucide-react";

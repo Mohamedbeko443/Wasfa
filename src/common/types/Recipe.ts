@@ -17,4 +17,17 @@ export interface Recipe {
   instructions: string[];
   level: LevelType;
   premium: boolean;
+  comments: Review[];
+}
+
+
+
+export interface Review {
+    id: string;
+    recipeId: string;
+    userId: string;
+    rating: number;
+    body: string;
+    username: string
+    createdAt: string;
 }
