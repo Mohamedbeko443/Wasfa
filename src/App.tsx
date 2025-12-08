@@ -1,6 +1,6 @@
 import {HeroUIProvider} from '@heroui/react'
 import {ToastProvider} from "@heroui/toast";
-import {Route , Routes} from "react-router-dom"
+import {Navigate, Route , Routes} from "react-router-dom"
 
 import SignUp from "./features/auth/pages/SignUp";
 import Login from "./features/auth/pages/Login";
@@ -10,11 +10,14 @@ import MainLayout from "./common/layout/MainLayout";
 import Home from "./features/home/pages/index"
 import ResetPassword from './features/auth/pages/ResetPassword';
 import RecipePage from './features/recipe/pages/RecipePage';
+import useAuthStore from './features/auth/store/auth';
 
 
 
 
 function App() {
+  const { accessToken } = useAuthStore();
+  
   return (
     <HeroUIProvider>
     <ToastProvider/>
@@ -24,11 +27,11 @@ function App() {
         <Route path='recipe/:id' element={<RecipePage/>} /> 
       </Route>
 
-      <Route element={<SignUp/>} path="/register"  />
-      <Route element={<Login/>} path="/login"  />
-      <Route element={<EmailConfirmation/>} path="/users/:userId/verify/:token"  />
-      <Route element={<ForgotPassword/>} path="/auth/forgot-password"  />
-      <Route element={<ResetPassword/>} path="/users/:userId/reset-password/:token"  />
+      <Route element={accessToken ? <Navigate to="/" /> : <SignUp/>} path="/register"  />
+      <Route element={accessToken ? <Navigate to="/" /> : <Login/>} path="/login"  />
+      <Route element={accessToken ? <Navigate to="/" /> : <EmailConfirmation/>} path="/users/:userId/verify/:token"  />
+      <Route element={accessToken ? <Navigate to="/" /> : <ForgotPassword/>} path="/auth/forgot-password"  />
+      <Route element={accessToken ? <Navigate to="/" /> : <ResetPassword/>} path="/users/:userId/reset-password/:token"  />
     </Routes>
     </HeroUIProvider>
     );

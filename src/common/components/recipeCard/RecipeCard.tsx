@@ -1,12 +1,14 @@
 import { Star, Clock, Users } from 'lucide-react';
 
 import { Recipe } from '../../types/Recipe';
+import { useNavigate } from 'react-router-dom';
 
 interface RecipeCardProps {
   recipe: Recipe;
 }
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 ease-in-out">
       <div className="relative w-full aspect-[4/3]">
@@ -45,7 +47,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
             <span className="ml-1 text-gray-600">{recipe.rating}</span>
           </div>
         </div>
-        <button className="w-full cursor-pointer bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+        <button onClick={() => navigate(`/recipe/${recipe.id}`)} className="w-full cursor-pointer bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300">
           View Recipe
         </button>
       </div>

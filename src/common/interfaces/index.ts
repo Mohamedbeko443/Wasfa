@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 
 import { InternalAxiosRequestConfig } from 'axios';
 import { LucideProps } from 'lucide-react';
@@ -29,6 +28,7 @@ export interface NavItem {
     path: string;
     icon: React.ComponentType<LucideProps>;
     isButton?: boolean;
+    show?: boolean;
 }
 
 type SelectOption = {

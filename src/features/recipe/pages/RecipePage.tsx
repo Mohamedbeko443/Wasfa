@@ -1,22 +1,28 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from 'lucide-react';
+import { useRecipe } from "../hooks/useRecipe";
+import { useEffect } from "react";
+
+import RecipeError from "./RecipeError";
 import ImageSection from "../components/imageSection/ImageSection";
 import Ingredients from "../components/ingredients/Ingredients";
 import Instructions from "../components/instuctions/Instructions";
 import ReviewForm from "../components/reviewForm/ReviewForm";
 import ReviewList from "../components/reviewList/ReviewList";
-import { useRecipe } from "../hooks/useRecipe";
 import RecipePageSkeleton from "./RecipePageSkeleton";
-import RecipeError from "./RecipeError";
 import CommentsNotFound from "../components/notFoundComments/CommentsNotFound";
+import useAuthStore from "@/features/auth/store/auth";
 
 
 export default function RecipePage() {
     const navigate = useNavigate();
     const { id } = useParams<{id: string}>();
     const { recipe, isLoading, error, refetch } = useRecipe(id!);
+    const { accessToken } = useAuthStore();
 
-    console.log(recipe)
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [id])
 
     if(isLoading)
     {
@@ -51,7 +57,7 @@ export default function RecipePage() {
             </div>
 
             {/* Ingredients & Instructions */}
-            <div className="container mx-auto px-6 mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="container mx-auto px-6 mt-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
                 {/* Ingredients */}
                 <Ingredients ingredients={recipe?.ingredients!} />
 
@@ -63,8 +69,12 @@ export default function RecipePage() {
             <div className="container mx-auto px-6 mt-12 mb-16 bg-white shadow-lg rounded-xl p-6">
                 <h2 className="text-3xl font-bold mb-6">Ratings & Reviews</h2>
 
-                {/* Review Form */}
-                <ReviewForm />
+                {/* Review Form */} 
+                {
+                    accessToken && (
+                        <ReviewForm recipeId={recipe?.id!}/>
+                    )
+                }
 
                 {recipe?.comments.length === 0 ? (
                     <CommentsNotFound/>

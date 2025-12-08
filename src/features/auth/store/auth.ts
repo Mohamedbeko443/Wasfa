@@ -1,6 +1,3 @@
-/* eslint-disable import/order */
-/* eslint-disable prettier/prettier */
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { AuthStore } from '../interfaces';

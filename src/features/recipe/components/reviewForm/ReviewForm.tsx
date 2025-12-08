@@ -1,7 +1,7 @@
 import RecipeRating from '@/common/components/recipeRating/RecipeRating'
 
 
-function ReviewForm() {
+function ReviewForm({recipeId}: {recipeId: string}) {
   return (
     <div className="border border-gray-200 p-5 rounded-xl bg-gray-50">
                     <h4 className="text-xl font-bold mb-3">Leave a Review</h4>
