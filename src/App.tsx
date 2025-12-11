@@ -1,6 +1,6 @@
 import {HeroUIProvider} from '@heroui/react'
 import {ToastProvider} from "@heroui/toast";
-import {Navigate, Route , Routes} from "react-router-dom"
+import { Navigate, Route , Routes } from "react-router-dom"
 
 import SignUp from "./features/auth/pages/SignUp";
 import Login from "./features/auth/pages/Login";
@@ -17,7 +17,7 @@ import useAuthStore from './features/auth/store/auth';
 
 function App() {
   const { accessToken } = useAuthStore();
-  
+
   return (
     <HeroUIProvider>
     <ToastProvider/>
@@ -35,6 +35,6 @@ function App() {
     </Routes>
     </HeroUIProvider>
     );
-}
+} 
 
 export default App;
