@@ -3,8 +3,11 @@ import { Review } from '@/common/types/Recipe';
 import { useDisclosure } from '@heroui/react';
 import { Trash, Pen } from 'lucide-react';
 import Alert from '../alert/Alert';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import UpdateModal from '../updateCommentModal/UpdateModal';
+import useAuthStore from '@/features/auth/store/auth';
+import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from '../reviewForm/ReviewForm';
 
 
 interface ReviewListProps {
@@ -13,25 +16,27 @@ interface ReviewListProps {
 
 function ReviewList({ reviews }: ReviewListProps) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen: editModalOpen, onOpen: onEditModalOpen, onOpenChange: editModalOpenChange } = useDisclosure();
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [selectedReview, setSelectedReview] = useState<Review | null>(null);
+    const { accessToken } = useAuthStore();
+    const decoded = accessToken ? jwtDecode<JwtPayload>(accessToken) : null;
 
-    const { isOpen: editModalOpen, onOpen: onEditModalOpen, onOpenChange: editModalOpenChange } = useDisclosure();
-
+    
     const handleDelete = (id: string) => {
         setSelectedId(id);
         onOpen();
     }
 
-   const handleEdit = (review: Review) => {
-     setSelectedReview(review);
-     onEditModalOpen();
-   }
+    const handleEdit = (review: Review) => {
+        setSelectedReview(review);
+        onEditModalOpen();
+    }
 
     return (
         <div className="mt-8 space-y-6">
-            {reviews.map((review, i) => (
-                <div key={i} className="border-b border-gray-200 pb-4">
+            {reviews.map((review) => (
+                <div key={review.id} className="border-b border-gray-200 pb-4">
                     <p className="font-semibold">{review.username}</p>
 
                     <div className="flex items-center gap-3 my-2 text-gray-600">
@@ -45,15 +50,29 @@ function ReviewList({ reviews }: ReviewListProps) {
                         </p>
 
                         <div className='flex items-center gap-2 '>
-                            <Trash onClick={() => handleDelete(review.id)} className='cursor-pointer text-red-500' size={20} />
-                            <Pen onClick={() => handleEdit(review)} className='cursor-pointer text-gray-500' size={20} />
+                            {decoded?._id === review.user && (
+                                <>
+                                    <Trash onClick={() => handleDelete(review.id)} className='cursor-pointer text-red-500' size={20} />
+                                    <Pen onClick={() => handleEdit(review)} className='cursor-pointer text-gray-500' size={20} />
+                                </>
+                            )}
                         </div>
                     </div>
 
                 </div>
             ))}
-            <Alert isOpen={isOpen} onOpenChange={onOpenChange} selectedId={selectedId!} />
-            <UpdateModal key={selectedReview?.id} isOpen={editModalOpen} onOpenChange={editModalOpenChange} review={selectedReview!} />
+            {selectedId && (
+                <Alert isOpen={isOpen} onOpenChange={onOpenChange} selectedId={selectedId} />
+            )}
+            
+            {selectedReview && (
+                <UpdateModal
+                    key={selectedReview.id}
+                    isOpen={editModalOpen}
+                    onOpenChange={editModalOpenChange}
+                    review={selectedReview}
+                />
+            )}
         </div>
     )
 }

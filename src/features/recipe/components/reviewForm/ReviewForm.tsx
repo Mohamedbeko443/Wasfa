@@ -5,7 +5,7 @@ import { useAddComment } from '../../hooks/useAddComment';
 import { useState } from 'react';
 import { Spinner } from '@heroui/react';
 
-interface JwtPayload {
+export interface JwtPayload {
     _id: string;
     isAdmin: boolean;
     iat: number;

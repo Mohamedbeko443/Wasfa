@@ -24,8 +24,8 @@ export interface Recipe {
 
 export interface Review {
     id: string;
-    recipeId: string;
-    userId: string;
+    recipe: string;
+    user: string;
     rating: number;
     body: string;
     username: string
