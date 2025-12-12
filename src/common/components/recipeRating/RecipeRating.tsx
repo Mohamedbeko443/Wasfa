@@ -11,7 +11,7 @@ function RecipeRating({rating}: {rating: number}) {
                         fill={i < Math.trunc(rating) ? 'currentColor' : 'none'}
                     />
                 ))}
-                <span className="ml-1 text-gray-500">{rating}</span>
+                <span className="ml-1 text-gray-500">{Math.trunc(rating) > 0 ? Math.trunc(rating) : null}</span>
             </div>
         </div>
     )

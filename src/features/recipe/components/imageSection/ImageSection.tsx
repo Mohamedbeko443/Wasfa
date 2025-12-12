@@ -21,7 +21,7 @@ function ImageSection({ recipe }: ImageSectionProps) {
                 style={{ backgroundImage: `url(${recipe.image.url})` }} 
                 className="relative bg-cover bg-center h-72 md:h-96 flex items-end"
             >
-                {/* Overlay for readability */}
+                
                 <div className="absolute inset-0 bg-black/40 md:bg-black/30"></div>
 
                 <div className="relative container mx-auto px-6 py-6 space-y-3">

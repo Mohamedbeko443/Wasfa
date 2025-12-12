@@ -16,21 +16,24 @@ import useAuthStore from "@/features/auth/store/auth";
 
 export default function RecipePage() {
     const navigate = useNavigate();
-    const { id } = useParams<{id: string}>();
+    const { id } = useParams<{ id: string }>();
     const { recipe, isLoading, error, refetch } = useRecipe(id!);
     const { accessToken } = useAuthStore();
+
+    const avgRating = recipe?.comments?.length
+        ? recipe.comments.reduce((acc, comment) => acc + comment.rating, 0) / recipe.comments.length
+        : 0;
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id])
 
-    if(isLoading)
-    {
+    if (isLoading) {
         return <RecipePageSkeleton />
     }
 
-    if(error)
-    {
+    if (error) {
         return <RecipeError message={error.message} onRetry={refetch} />
     }
 
@@ -38,8 +41,8 @@ export default function RecipePage() {
         <section className="bg-gray-50 pb-12">
             {/* Back Button */}
             <div className="container mx-auto p-4">
-                <button 
-                    onClick={() => navigate(-1)} 
+                <button
+                    onClick={() => navigate(-1)}
                     className="flex items-center gap-2 text-lg text-gray-700 cursor-pointer hover:text-orange-500 transition"
                 >
                     <ArrowLeft size={22} /> Back
@@ -47,7 +50,7 @@ export default function RecipePage() {
             </div>
 
             {/* Image Section */}
-            <ImageSection recipe={recipe!} />
+            <ImageSection recipe={{ ...recipe!, rating: avgRating }} />
 
             {/* Description */}
             <div className="container mx-auto px-6 mt-8">
@@ -69,15 +72,15 @@ export default function RecipePage() {
             <div className="container mx-auto px-6 mt-12 mb-16 bg-white shadow-lg rounded-xl p-6">
                 <h2 className="text-3xl font-bold mb-6">Ratings & Reviews</h2>
 
-                {/* Review Form */} 
+                {/* Review Form */}
                 {
                     accessToken && (
-                        <ReviewForm recipeId={recipe?.id!}/>
+                        <ReviewForm recipeId={recipe?.id!} />
                     )
                 }
 
                 {recipe?.comments.length === 0 ? (
-                    <CommentsNotFound/>
+                    <CommentsNotFound />
                 ) : (
                     <ReviewList reviews={recipe?.comments!} />
                 )}

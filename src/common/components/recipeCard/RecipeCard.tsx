@@ -8,6 +8,7 @@ interface RecipeCardProps {
 }
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
+   const avgRating = recipe.comments.length ? recipe.comments.reduce((acc, comment) => acc + comment.rating, 0) / recipe.comments.length : 0;
   const navigate = useNavigate();
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 ease-in-out">
@@ -19,7 +20,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
         />
         <div className="absolute top-2 right-2 bg-yellow-400 text-white px-2 py-1 rounded-full text-sm font-bold flex items-center gap-1">
           <Star className="w-4 h-4" />
-          <span>{recipe.rating}</span>
+          <span>{avgRating}</span>
         </div>
       </div>
       <div className="p-4">
@@ -40,11 +41,11 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-5 h-5 ${i < Math.trunc(recipe.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
-                fill={i < Math.trunc(recipe.rating) ? 'currentColor' : 'none'}
+                className={`w-5 h-5 ${i < Math.trunc(avgRating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                fill={i < Math.trunc(avgRating) ? 'currentColor' : 'none'}
               />
             ))}
-            <span className="ml-1 text-gray-600">{recipe.rating}</span>
+            <span className="ml-1 text-gray-600">{Math.trunc(avgRating) > 0 ? Math.trunc(avgRating) : null}</span>
           </div>
         </div>
         <button onClick={() => navigate(`/recipe/${recipe.id}`)} className="w-full cursor-pointer bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300">

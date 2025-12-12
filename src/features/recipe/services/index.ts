@@ -22,12 +22,13 @@ export const fetchRecipeById = async (recipeId: string) => {
 export type addCommentType = {
     recipeId: string ,
     userId: string , 
-    body: string
+    body: string,
+    rating: number
 }
-
-export const addComment = async ({recipeId, userId, body}: addCommentType) => {
+ 
+export const addComment = async ({recipeId, userId, body , rating}: addCommentType) => {
     try {
-        const response = await api.post("/comments", { recipeId, userId, body })
+        const response = await api.post("/comments", { recipeId, userId, body , rating})
         return response.data
     }
     catch (err: unknown)

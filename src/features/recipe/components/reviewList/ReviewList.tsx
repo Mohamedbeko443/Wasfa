@@ -3,7 +3,7 @@ import { Review } from '@/common/types/Recipe';
 import { useDisclosure } from '@heroui/react';
 import { Trash, Pen } from 'lucide-react';
 import Alert from '../alert/Alert';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import UpdateModal from '../updateCommentModal/UpdateModal';
 import useAuthStore from '@/features/auth/store/auth';
 import { jwtDecode } from "jwt-decode";
@@ -22,7 +22,7 @@ function ReviewList({ reviews }: ReviewListProps) {
     const { accessToken } = useAuthStore();
     const decoded = accessToken ? jwtDecode<JwtPayload>(accessToken) : null;
 
-    
+
     const handleDelete = (id: string) => {
         setSelectedId(id);
         onOpen();
@@ -40,7 +40,7 @@ function ReviewList({ reviews }: ReviewListProps) {
                     <p className="font-semibold">{review.username}</p>
 
                     <div className="flex items-center gap-3 my-2 text-gray-600">
-                        <RecipeRating rating={review.rating || 5} />
+                        <RecipeRating rating={review.rating} />
                         <span>{new Date(review.createdAt).toLocaleDateString()}</span>
                     </div>
 
