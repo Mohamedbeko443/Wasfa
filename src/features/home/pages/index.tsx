@@ -13,13 +13,15 @@ export default function Home() {
     const sortType = (searchParams.get('sort') as sortType) || 'asc';
     const filterBy = (searchParams.get('filter') as filterType) || 'all';
     const limit = (parseInt(searchParams.get('limit') || '6')) as limit;
+    const page = (parseInt(searchParams.get('page') || '1')) as number;
 
     const queryParams: RecipeDefaults = {
         sortBy,
         sortType,
         filterBy,
         limit,
-        ingredients: []
+        ingredients: [],
+        page
     };
 
     

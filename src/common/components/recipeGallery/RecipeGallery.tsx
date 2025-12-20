@@ -6,6 +6,9 @@ import RecipeCardSkeleton from '../recipeSkeleton/RecipeCardSkeleton';
 import RecipeCardError from '../recipeErrorPage/RecipeCardError';
 import { RecipeDefaults } from '@/features/home/services';
 import NoRecipesFound from '../recipeNotFound/NoRecipesFound';
+import { Pagination } from '@heroui/react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 interface RecipeGalleryProps {
     queryParams: RecipeDefaults;
@@ -13,8 +16,24 @@ interface RecipeGalleryProps {
 }
 
 export default function RecipeGallery({ queryParams ,  Search }: RecipeGalleryProps) {
-
     const { data, isError, isPending , refetch } = useRecipes(queryParams);
+    const [searchParams , setSearchParams] = useSearchParams();
+    const pageFromUrl = Number(searchParams.get('page')) || 1;
+    const [page, setPage] = useState<number>(pageFromUrl); 
+
+    const handlePageChange = (newPage: number) => {
+    setSearchParams(prev => {
+        const params = new URLSearchParams(prev);
+        params.set('page', newPage.toString());
+        return params;
+    });
+};
+
+    useEffect(() => {
+    if (page !== pageFromUrl) {
+        setPage(pageFromUrl);
+    }
+}, [pageFromUrl]);
 
     
     if (isError) return (
@@ -34,7 +53,7 @@ export default function RecipeGallery({ queryParams ,  Search }: RecipeGalleryPr
                     </div>
                 )}
 
-                <RecipeFilter />
+                <RecipeFilter /> 
 
                 {isPending && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
@@ -54,6 +73,10 @@ export default function RecipeGallery({ queryParams ,  Search }: RecipeGalleryPr
                     {data?.recipes?.map((recipe: Recipe) => (
                         <RecipeCard key={recipe.id} recipe={recipe} />
                     ))}
+                </div>
+
+                <div className="flex justify-center mt-8">
+                    <Pagination initialPage={page} total={data?.totalPages!} color='warning' size='lg' onChange={handlePageChange} showShadow variant='bordered' showControls loop />
                 </div>
             </div>
         </div>

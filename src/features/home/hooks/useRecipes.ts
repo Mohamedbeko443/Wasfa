@@ -14,7 +14,7 @@ interface IRecipes {
 
 export const useRecipes = (params?: RecipeDefaults) => {
 
-    const { data, isPending, isError , isLoading , refetch } = useQuery<IRecipes>({
+    const { data, isPending, isError , isLoading , refetch  } = useQuery<IRecipes>({
         queryKey: ['recipes', params],
         queryFn: () => fetchRecipes(params)
     })

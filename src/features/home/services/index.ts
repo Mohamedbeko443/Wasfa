@@ -8,6 +8,7 @@ export interface RecipeDefaults {
     filterBy: filterType;
     limit: limit;
     ingredients: string[];
+    page: number;
 }
 
 const defaultParams: RecipeDefaults = {
@@ -15,13 +16,16 @@ const defaultParams: RecipeDefaults = {
     sortType: "asc",
     filterBy: "all",
     limit: 6,
-    ingredients: []
+    ingredients: [],
+    page: 1
 };
 
 export const fetchRecipes = async (params: RecipeDefaults = defaultParams) => {
     params.ingredients = params.ingredients || [];
+    params.page = params.page || 1;
+    console.log(params.page);
     try {
-        const response = await api.get(`/recipes?sortBy=${params.sortBy}&sort=${params.sortType}&filter=${params.filterBy}&limit=${params.limit}&ingredients=${params.ingredients?.join(',')}`);
+        const response = await api.get(`/recipes?sortBy=${params.sortBy}&sort=${params.sortType}&filter=${params.filterBy}&limit=${params.limit}&ingredients=${params.ingredients?.join(',')}&page=${params.page}`);
         return response.data;
     } catch (err: unknown) {
         if (err instanceof AxiosError) {
