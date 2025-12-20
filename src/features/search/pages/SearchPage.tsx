@@ -1,5 +1,5 @@
 import RecipeGallery from "@/common/components/recipeGallery/RecipeGallery";
-import { RecipeParams } from "@/features/home/services";
+import { RecipeDefaults } from "@/features/home/services";
 import { filterType, limit, sortByType, sortType } from "@/features/home/types";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -17,11 +17,12 @@ function SearchPage() {
     const filterBy = (searchParams.get('filter') as filterType) || 'all';
     const limit = (parseInt(searchParams.get('limit') || '6')) as limit;
 
-    const queryParams: RecipeParams = {
+    const queryParams: RecipeDefaults = {
         sortBy,
         sortType,
         filterBy,
-        limit
+        limit,
+        ingredients
     };
 
 

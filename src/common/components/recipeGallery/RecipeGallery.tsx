@@ -4,11 +4,11 @@ import { Recipe } from '../../types/Recipe';
 import { useRecipes } from '@/features/home/hooks/useRecipes';
 import RecipeCardSkeleton from '../recipeSkeleton/RecipeCardSkeleton';
 import RecipeCardError from '../recipeErrorPage/RecipeCardError';
-import { RecipeParams } from '@/features/home/services';
+import { RecipeDefaults } from '@/features/home/services';
 import NoRecipesFound from '../recipeNotFound/NoRecipesFound';
 
 interface RecipeGalleryProps {
-    queryParams: RecipeParams;
+    queryParams: RecipeDefaults;
     Search?: boolean;
 }
 

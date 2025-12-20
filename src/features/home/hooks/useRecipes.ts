@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { fetchRecipes, RecipeParams } from "../services"
+import { fetchRecipes, RecipeDefaults } from "../services"
 import { Recipe } from "@/common/types/Recipe"
 
 
@@ -12,7 +12,7 @@ interface IRecipes {
 }
 
 
-export const useRecipes = (params?: RecipeParams) => {
+export const useRecipes = (params?: RecipeDefaults) => {
 
     const { data, isPending, isError , isLoading , refetch } = useQuery<IRecipes>({
         queryKey: ['recipes', params],

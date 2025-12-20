@@ -8,8 +8,11 @@ interface RecipeCardProps {
 }
 
 export default function RecipeCard({ recipe }: RecipeCardProps) {
-   const avgRating = recipe.comments.length ? recipe.comments.reduce((acc, comment) => acc + comment.rating, 0) / recipe.comments.length : 0;
+  const avgRating = recipe.comments?.length
+    ? recipe.comments.reduce((acc, comment) => acc + (Number(comment.rating) || 0), 0) / recipe.comments.length
+    : 0;
   const navigate = useNavigate();
+  console.log(avgRating);
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 ease-in-out">
       <div className="relative w-full aspect-[4/3]">

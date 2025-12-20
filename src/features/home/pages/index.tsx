@@ -2,7 +2,7 @@ import HeroSection from "../components/Hero"
 import RecipeGallery from '../../../common/components/recipeGallery/RecipeGallery';
 import HowItWorks from '../components/HowItWorks';
 import { useSearchParams } from "react-router-dom";
-import { RecipeParams } from "../services";
+import { RecipeDefaults } from "../services";
 import { filterType, limit, sortByType, sortType } from "../types";
 
 
@@ -14,11 +14,12 @@ export default function Home() {
     const filterBy = (searchParams.get('filter') as filterType) || 'all';
     const limit = (parseInt(searchParams.get('limit') || '6')) as limit;
 
-    const queryParams: RecipeParams = {
+    const queryParams: RecipeDefaults = {
         sortBy,
         sortType,
         filterBy,
-        limit
+        limit,
+        ingredients: []
     };
 
     
@@ -26,7 +27,6 @@ export default function Home() {
     return (
         <div>
             <HeroSection />
-            
             <RecipeGallery  queryParams={queryParams} />
             <HowItWorks />
         </div>
