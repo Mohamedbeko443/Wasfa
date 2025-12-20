@@ -21,12 +21,13 @@ export default function Home() {
         limit
     };
 
-    console.log(queryParams);
+    
 
     return (
         <div>
             <HeroSection />
-            <RecipeGallery queryParams={queryParams} />
+            
+            <RecipeGallery  queryParams={queryParams} />
             <HowItWorks />
         </div>
     )

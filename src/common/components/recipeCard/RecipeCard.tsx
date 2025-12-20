@@ -18,10 +18,10 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
           alt={recipe.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute top-2 right-2 bg-yellow-400 text-white px-2 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+        {avgRating ? <div className="absolute top-2 right-2 bg-yellow-400 text-white px-2 py-1 rounded-full text-sm font-bold flex items-center gap-1">
           <Star className="w-4 h-4" />
-          <span>{avgRating}</span>
-        </div>
+          <span>{Math.trunc(avgRating)}</span>
+        </div> : null}
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold mb-1">{recipe.name}</h3>

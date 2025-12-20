@@ -11,6 +11,7 @@ import Home from "./features/home/pages/index"
 import ResetPassword from './features/auth/pages/ResetPassword';
 import RecipePage from './features/recipe/pages/RecipePage';
 import useAuthStore from './features/auth/store/auth';
+import SearchPage from './features/search/pages/SearchPage';
 
 
 
@@ -25,6 +26,7 @@ function App() {
       <Route path='/' element={<MainLayout />}>
         <Route index element={<Home />} /> 
         <Route path='recipe/:id' element={<RecipePage/>} /> 
+        <Route path='search' element={<SearchPage/>} /> 
       </Route>
 
       <Route element={accessToken ? <Navigate to="/" /> : <SignUp/>} path="/register"  />

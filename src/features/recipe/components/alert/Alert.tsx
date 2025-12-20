@@ -39,7 +39,7 @@ function Alert({isOpen , onOpenChange , selectedId}: AlertProps) {
                 
               </ModalBody>
               <ModalFooter>
-                <Button onPress={handleDelete} disabled={isPending} className="bg-red-500 hover:bg-red-600 text-white">
+                <Button onPress={handleDelete} disabled={isPending} className="bg-red-500 hover:bg-red-600 font-semibold text-white">
                   Delete
                 </Button>
               </ModalFooter>
