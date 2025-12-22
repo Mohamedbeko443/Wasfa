@@ -76,7 +76,7 @@ export default function RecipeGallery({ queryParams ,  Search }: RecipeGalleryPr
                 </div>
 
                 <div className="flex justify-center mt-8">
-                    <Pagination initialPage={page} total={data?.totalPages!} color='warning' size='lg' onChange={handlePageChange} showShadow variant='bordered' showControls loop />
+                    <Pagination className=' cursor-pointer' initialPage={page} total={data?.totalPages!} color='warning' size='lg' onChange={handlePageChange} showShadow variant='bordered' showControls loop />
                 </div>
             </div>
         </div>
