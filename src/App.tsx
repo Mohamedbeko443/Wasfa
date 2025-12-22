@@ -13,6 +13,7 @@ import RecipePage from './features/recipe/pages/RecipePage';
 import useAuthStore from './features/auth/store/auth';
 import SearchPage from './features/search/pages/SearchPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
+import PlansPage from './features/plans/pages/PlansPage';
 
 
 
@@ -29,6 +30,7 @@ function App() {
           <Route path='recipe/:id' element={<RecipePage />} />
           <Route path='search' element={<SearchPage />} />
           <Route path='profile' element={<ProfilePage />} />
+          <Route path='plans' element={<PlansPage />} />
         </Route>
 
         <Route element={accessToken ? <Navigate to="/" /> : <SignUp />} path="/register" />
