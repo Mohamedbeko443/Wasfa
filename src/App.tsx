@@ -18,6 +18,7 @@ import AdminLayout from './common/layout/AdminLayout';
 import OverviewPage from './features/admin/overview/pages/OverviewPage';
 import UsersPage from './features/admin/users/pages/UsersPage';
 import RecipesPage from './features/admin/recipes/pages/RecipesPage';
+import ReviewsPage from './features/admin/reviews/pages/ReviewsPage';
 
 
 
@@ -41,6 +42,7 @@ function App() {
           <Route index element={<OverviewPage />} />
           <Route path='users' element={<UsersPage />} />
           <Route path='recipes' element={<RecipesPage />} />
+          <Route path='reviews' element={<ReviewsPage />} />
         </Route>
 
         <Route element={accessToken ? <Navigate to="/" /> : <SignUp />} path="/register" />
