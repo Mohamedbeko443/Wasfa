@@ -16,6 +16,7 @@ import ProfilePage from './features/profile/pages/ProfilePage';
 import PlansPage from './features/plans/pages/PlansPage';
 import AdminLayout from './common/layout/AdminLayout';
 import OverviewPage from './features/admin/overview/pages/OverviewPage';
+import UsersPage from './features/admin/users/pages/UsersPage';
 
 
 
@@ -37,6 +38,7 @@ function App() {
 
         <Route path='/admin' element={<AdminLayout />}>
           <Route index element={<OverviewPage />} />
+          <Route path='users' element={<UsersPage />} />
         </Route>
 
         <Route element={accessToken ? <Navigate to="/" /> : <SignUp />} path="/register" />
