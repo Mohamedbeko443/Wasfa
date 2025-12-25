@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ChefHat } from "lucide-react";
-import SearchBar from "./SearchBar";
 import MobileMenuButton from "./MobileMenuButton";
 import NavigationItems from "./NavigationItems";
 
@@ -29,7 +28,6 @@ export default function Header()  {
 
                     <div className="hidden items-center space-x-5 lg:flex">
                         <NavigationItems />
-                        <SearchBar />
                     </div>
 
                     <div className="lg:hidden">
@@ -43,7 +41,7 @@ export default function Header()  {
                     }`}>
                     <div className="mt-4 lg:hidden">
                         <NavigationItems isMobile onItemClick={toggleMenu} />
-                        <SearchBar isMobile />
+                       
                     </div>
                 </div>
             </div>

@@ -14,6 +14,8 @@ import useAuthStore from './features/auth/store/auth';
 import SearchPage from './features/search/pages/SearchPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
 import PlansPage from './features/plans/pages/PlansPage';
+import AdminLayout from './common/layout/AdminLayout';
+import OverviewPage from './features/admin/overview/pages/OverviewPage';
 
 
 
@@ -31,6 +33,10 @@ function App() {
           <Route path='search' element={<SearchPage />} />
           <Route path='profile' element={<ProfilePage />} />
           <Route path='plans' element={<PlansPage />} />
+        </Route>
+
+        <Route path='/admin' element={<AdminLayout />}>
+          <Route index element={<OverviewPage />} />
         </Route>
 
         <Route element={accessToken ? <Navigate to="/" /> : <SignUp />} path="/register" />
