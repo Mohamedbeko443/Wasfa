@@ -1,7 +1,7 @@
 import { Activity, LucideIcon } from 'lucide-react';
 
 interface ActivityItem {
-    id: number;
+    id: number | string;
     user: string;
     action: string;
     time: string;
