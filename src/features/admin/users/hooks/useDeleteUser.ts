@@ -19,7 +19,8 @@ export const useDeleteUser = () => {
                 color: "success",
             })
         },
-        onError: () => {
+        onError: (err) => {
+            console.log(err);
             addToast({
                 title: "User deleted failed",
                 color: "danger",

@@ -10,13 +10,15 @@ import {
 interface AlertModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
-    onConfirm: () => void;
+    onConfirm: (id: string) => void;
     title?: string;
     message: string;
     confirmText?: string;
     cancelText?: string;
     confirmColor?: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
     isPending?: boolean;
+    selectedId?: string;
+    userAction? : "ban" | "active";
 }
 
 function AlertModal({
@@ -28,12 +30,14 @@ function AlertModal({
     confirmText = "Confirm",
     cancelText = "Cancel",
     confirmColor = "danger",
-    isPending = false
+    isPending = false,
+    selectedId,
+    userAction
 }: AlertModalProps) {
 
     const handleConfirm = () => {
-        onConfirm();
-        onOpenChange(false);
+        onConfirm(selectedId!);   
+            onOpenChange(false);
     }
 
     return (

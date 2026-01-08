@@ -8,14 +8,14 @@ import {
 } from "@heroui/react";
 import { IUsers } from '../hooks/useUsers';
 import { formatDate } from '../utils';
-import { useDeleteUser } from '../hooks/useDeleteUser';
 
+interface UserRowProps {
+    user: IUsers;
+    onDelete: (id: string) => void;
+    onBan: (user: IUsers) => void;
+}
 
-// add alert later 
-const UserRow = ({ user }: { user: IUsers }) => {
-
-    const { mutate: deleteUser, isPending, isError } = useDeleteUser();
-
+const UserRow = ({ user , onDelete , onBan  }: UserRowProps) => {
 
     return (
         <tr className="hover:bg-gray-50/50 transition-colors">
@@ -75,10 +75,10 @@ const UserRow = ({ user }: { user: IUsers }) => {
                                 </DropdownTrigger>
                                 <DropdownMenu aria-label="User Actions">
 
-                                    <DropdownItem key="ban" onClick={() => { alert("Ban User") }} className={user.isBanned ? "text-green-600" : "text-yellow-600"} startContent={user.isBanned ? <Check className="h-4 w-4" /> : <Ban className="h-4 w-4" />}>
+                                    <DropdownItem key="ban" onClick={() => { onBan(user) }} className={user.isBanned ? "text-green-600" : "text-yellow-600"} startContent={user.isBanned ? <Check className="h-4 w-4" /> : <Ban className="h-4 w-4" />}>
                                         {user.isBanned ? 'Active' : 'Ban'} User
                                     </DropdownItem>
-                                    <DropdownItem key="delete" onClick={() => { deleteUser(user.id) }} className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
+                                    <DropdownItem key="delete" onClick={() => { onDelete(user.id) }} className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
                                         Delete User
                                     </DropdownItem>
                                 </DropdownMenu>

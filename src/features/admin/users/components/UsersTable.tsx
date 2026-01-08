@@ -1,8 +1,13 @@
-import { useUsers } from '../hooks/useUsers';
+import { IUsers, useUsers } from '../hooks/useUsers';
 import UserRow from './UserRow';
 import { UsersTableSkeleton } from './UsersTableSkeleton';
 import UsersError from './UsersError';
 import { roleType, statusType } from '../services';
+import AlertModal from '../../components/AlertModal';
+import { useDisclosure } from '@heroui/react';
+import { useState } from 'react';
+import { useDeleteUser } from '../hooks/useDeleteUser';
+import { useToggleBan } from '../hooks/useToggleBan';
 
 interface UsersTableProps {
     role: roleType;
@@ -12,9 +17,25 @@ interface UsersTableProps {
 }
 
 const UsersTable = ({ role, status, search, page }: UsersTableProps) => {
-
-
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [userAction, setUserAction] = useState<"active" | "ban" | null>(null);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { users, isError, isLoading, refetch } = useUsers({ role, status, search, page });
+    const { mutate: deleteUser, isPending } = useDeleteUser();
+
+    const { isOpen: isOpenBan, onOpen: onOpenBan, onOpenChange: onOpenChangeBan } = useDisclosure();
+    const { toggleBan, isPending: isBanPending } = useToggleBan(userAction!);
+
+    const handleDelete = (id: string) => {
+        setSelectedId(id);
+        onOpen();
+    }
+
+    const handleBan = (user: IUsers) => {
+        setSelectedId(user.id);
+        setUserAction(user.isBanned ? "active" : "ban");
+        onOpenBan();
+    }
 
     if (isLoading) {
         return <UsersTableSkeleton />;
@@ -42,7 +63,7 @@ const UsersTable = ({ role, status, search, page }: UsersTableProps) => {
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                         {users?.map((user) => (
-                            <UserRow key={user.id} user={user} />
+                            <UserRow key={user.id} user={user} onDelete={handleDelete} onBan={handleBan} />
                         ))
                         }
                         {!isError && users?.length === 0 && (
@@ -53,6 +74,35 @@ const UsersTable = ({ role, status, search, page }: UsersTableProps) => {
                     </tbody>
                 </table>
             </div>
+            {
+                selectedId && (
+                    <AlertModal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        title='Delete User'
+                        message='Are you sure you want to delete this user?'
+                        confirmText='Delete'
+                        selectedId={selectedId}
+                        onConfirm={deleteUser}
+                        isPending={isPending}
+                    />
+                )
+            }
+            {
+                selectedId && (
+                    <AlertModal
+                        isOpen={isOpenBan}
+                        onOpenChange={onOpenChangeBan}
+                        title={`${userAction === "ban" ? "Ban" : "Active"} User`}
+                        message={`Are you sure you want to ${userAction === "ban" ? "ban" : "active"} this user?`}
+                        confirmText={`${userAction === "ban" ? "Ban" : "Active"}`}
+                        confirmColor='warning'
+                        selectedId={selectedId}
+                        onConfirm={toggleBan}
+                        isPending={isBanPending}
+                    />
+                )
+            }
         </div>
     );
 };

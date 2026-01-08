@@ -41,3 +41,17 @@ export const deleteUser = async (id: string) => {
       throw error
    }
 }
+
+// toggle ban users 
+export const toggleBanUser = async (id: string) => {
+   try {
+      const response = await api.put(`/users/toggle-ban/${id}`)
+      return response.data;
+   } catch (error: unknown) {
+      console.log(error)
+      if (error instanceof AxiosError) {
+         throw error.response?.data
+      }
+      throw error
+   }
+}
