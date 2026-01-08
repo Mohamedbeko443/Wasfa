@@ -8,12 +8,13 @@ interface UsersTableProps {
     role: roleType;
     status: statusType;
     search: string;
+    page: number;
 }
 
-const UsersTable = ({ role, status, search }: UsersTableProps) => {
+const UsersTable = ({ role, status, search, page }: UsersTableProps) => {
 
 
-    const { users, isError, isLoading, refetch } = useUsers({ role, status, search });
+    const { users, isError, isLoading, refetch } = useUsers({ role, status, search, page });
 
     if (isLoading) {
         return <UsersTableSkeleton />;

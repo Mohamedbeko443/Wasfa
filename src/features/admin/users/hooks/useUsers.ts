@@ -17,6 +17,7 @@ export interface IUsers {
 interface IUsersResponse {
     users: IUsers[];
     count: number;
+    totalPages: number;
 }
 
 export const useUsers = (filters: userFilters) => {
@@ -24,5 +25,5 @@ export const useUsers = (filters: userFilters) => {
         queryKey: ["users", filters],
         queryFn: () => getAllUsers(filters),
     })
-    return { users: data?.users, isLoading, isError, error, refetch }
+    return { users: data?.users, totalPages: data?.totalPages, isLoading, isError, error, refetch }
 }
