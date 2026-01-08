@@ -46,7 +46,7 @@ function App() {
         </Route>
 
         <Route element={accessToken ? <Navigate to="/" /> : <SignUp />} path="/register" />
-        <Route element={accessToken ? <Navigate to="/" /> : <Login />} path="/login" />
+        <Route element={<Login />} path="/login" />
         <Route element={accessToken ? <Navigate to="/" /> : <EmailConfirmation />} path="/users/:userId/verify/:token" />
         <Route element={accessToken ? <Navigate to="/" /> : <ForgotPassword />} path="/auth/forgot-password" />
         <Route element={accessToken ? <Navigate to="/" /> : <ResetPassword />} path="/users/:userId/reset-password/:token" />

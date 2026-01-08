@@ -25,3 +25,19 @@ export const getAllUsers = async (filters: userFilters = {}) => {
       throw error
    }
 }
+
+
+
+// delete user 
+export const deleteUser = async (id: string) => {
+   try {
+      const response = await api.delete(`/profile/${id}`)
+      return response.data;
+   } catch (error: unknown) {
+      console.log(error)
+      if (error instanceof AxiosError) {
+         throw error.response?.data
+      }
+      throw error
+   }
+}

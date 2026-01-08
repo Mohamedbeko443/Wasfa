@@ -8,11 +8,13 @@ import {
 } from "@heroui/react";
 import { IUsers } from '../hooks/useUsers';
 import { formatDate } from '../utils';
+import { useDeleteUser } from '../hooks/useDeleteUser';
 
 
-
+// add alert later 
 const UserRow = ({ user }: { user: IUsers }) => {
 
+    const { mutate: deleteUser, isPending, isError } = useDeleteUser();
 
 
     return (
@@ -62,21 +64,28 @@ const UserRow = ({ user }: { user: IUsers }) => {
             </td>
             <td className="px-6 py-4 text-sm text-gray-500">{formatDate(user.createdAt)}</td>
             <td className="px-6 py-4 text-right">
-                <Dropdown>
-                    <DropdownTrigger>
-                        <Button isIconOnly size="sm" variant="light" className="text-gray-500 hover:text-gray-700">
-                            <MoreVertical className="h-4 w-4" />
-                        </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="User Actions">
-                        <DropdownItem key="ban" onClick={() => { alert("Ban User") }} className="text-yellow-600" startContent={<Ban className="h-4 w-4" />}>
-                            Ban User
-                        </DropdownItem>
-                        <DropdownItem key="delete" onClick={() => { alert("Delete User") }} className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
-                            Delete User
-                        </DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+                {
+                    !user.isAdmin && (
+                        <div>
+                            <Dropdown>
+                                <DropdownTrigger>
+                                    <Button isIconOnly size="sm" variant="light" className="text-gray-500 hover:text-gray-700">
+                                        <MoreVertical className="h-4 w-4" />
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="User Actions">
+
+                                    <DropdownItem key="ban" onClick={() => { alert("Ban User") }} className={user.isBanned ? "text-green-600" : "text-yellow-600"} startContent={user.isBanned ? <Check className="h-4 w-4" /> : <Ban className="h-4 w-4" />}>
+                                        {user.isBanned ? 'Active' : 'Ban'} User
+                                    </DropdownItem>
+                                    <DropdownItem key="delete" onClick={() => { deleteUser(user.id) }} className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
+                                        Delete User
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
+                    )
+                }
             </td>
         </tr>
     );

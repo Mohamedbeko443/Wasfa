@@ -5,7 +5,7 @@ import { loginSchema } from "../schemas";
 import { LoginFormInputs } from "../types";
 import { authClasses } from "../utils";
 import api from "../../../common/api";
-import { Link , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addToast } from "@heroui/react";
 import useAuthStore from "../store/auth";
 
@@ -25,16 +25,18 @@ export default function Login() {
 
     const onSubmit = async (data: LoginFormInputs) => {
         try {
-            const response = await api.post(`/auth/login`, data);
+            const response = await api.post<{ token: string, message: string, isAdmin: boolean }>(`/auth/login`, data);
             console.log(response.data);
             setAccessToken(response.data.token);
-            
+
             addToast({
                 title: "Login Successful!",
                 description: response.data?.message || "welcome back!",
                 color: "success",
             });
-            navigate("/");
+            console.log(response.data.isAdmin);
+            const path = response.data.isAdmin ? "/admin" : "/";
+            navigate(path, { replace: true });
         } catch (error: any) {
             console.error(error);
             addToast({
@@ -112,7 +114,7 @@ export default function Login() {
                                 Sign up
                             </Link>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
