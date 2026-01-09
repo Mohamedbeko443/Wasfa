@@ -24,7 +24,7 @@ const UsersTable = ({ role, status, search, page }: UsersTableProps) => {
     const { mutate: deleteUser, isPending } = useDeleteUser();
 
     const { isOpen: isOpenBan, onOpen: onOpenBan, onOpenChange: onOpenChangeBan } = useDisclosure();
-    const { toggleBan, isPending: isBanPending } = useToggleBan(userAction!);
+    const { toggleBan, isPending: isBanPending } = useToggleBan(userAction! , "users");
 
     const handleDelete = (id: string) => {
         setSelectedId(id);

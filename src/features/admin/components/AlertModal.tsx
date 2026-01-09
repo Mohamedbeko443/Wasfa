@@ -18,7 +18,6 @@ interface AlertModalProps {
     confirmColor?: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
     isPending?: boolean;
     selectedId?: string;
-    userAction? : "ban" | "active";
 }
 
 function AlertModal({
@@ -32,12 +31,11 @@ function AlertModal({
     confirmColor = "danger",
     isPending = false,
     selectedId,
-    userAction
 }: AlertModalProps) {
 
     const handleConfirm = () => {
         onConfirm(selectedId!);   
-            onOpenChange(false);
+        onOpenChange(false);
     }
 
     return (
