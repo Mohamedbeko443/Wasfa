@@ -3,12 +3,14 @@ import { AxiosError } from "axios";
 import { sortByType, sortType, filterType, limit } from "../types";
 
 export interface RecipeDefaults {
-    sortBy: sortByType;
-    sortType: sortType;
-    filterBy: filterType;
-    limit: limit;
-    ingredients: string[];
-    page: number;
+    sortBy?: sortByType;
+    sortType?: sortType;
+    filterBy?: filterType;
+    limit?: limit;
+    ingredients?: string[];
+    page?: number;
+    search?: string ;
+    type?:  "premium" | undefined;
 }
 
 const defaultParams: RecipeDefaults = {
@@ -17,15 +19,15 @@ const defaultParams: RecipeDefaults = {
     filterBy: "all",
     limit: 6,
     ingredients: [],
-    page: 1
-};
+    page: 1,
+
+}; 
 
 export const fetchRecipes = async (params: RecipeDefaults = defaultParams) => {
     params.ingredients = params.ingredients || [];
     params.page = params.page || 1;
-    console.log(params.page);
     try {
-        const response = await api.get(`/recipes?sortBy=${params.sortBy}&sort=${params.sortType}&filter=${params.filterBy}&limit=${params.limit}&ingredients=${params.ingredients?.join(',')}&page=${params.page}`);
+        const response = await api.get(`/recipes?sortBy=${params.sortBy}&sort=${params.sortType}&filter=${params.filterBy}&limit=${params.limit}&ingredients=${params.ingredients?.join(',')}&page=${params.page}&type=${params.type}&search=${params.search}`);
         return response.data;
     } catch (err: unknown) {
         if (err instanceof AxiosError) {
