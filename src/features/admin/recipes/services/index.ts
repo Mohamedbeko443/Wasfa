@@ -42,3 +42,18 @@ export const createRecipe = async (recipe: recipeDto) => {
         throw error;
     }
 };
+
+
+
+
+export const deleteRecipe = async (id: string) => {
+    try {
+        const response = await api.delete(`/recipes/${id}`);
+        return response.data;
+    } catch (error) {
+        if (isAxiosError(error)) {
+            throw error.response?.data;
+        }
+        throw error;
+    }
+};

@@ -1,14 +1,16 @@
 import { Recipe } from "@/common/types/Recipe";
 import { Button } from "@heroui/button";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/dropdown";
-import { Clock, Crown, Edit, MoreVertical, Star, Trash2, Users } from "lucide-react";
+import { Clock, Crown, Edit, Image, MoreVertical, Star, Trash2, Users } from "lucide-react";
 
 interface RecipeRowProps {
     recipe: Recipe;
+    onDeleteOpen: () => void;
+    setSelectedId: (id: string) => void;
 }
 
 
-function RecipeRow({ recipe }: RecipeRowProps) {
+function RecipeRow({ recipe , onDeleteOpen , setSelectedId }: RecipeRowProps) {
 
 
    const getLevelColor = (level: string) => {
@@ -19,6 +21,11 @@ function RecipeRow({ recipe }: RecipeRowProps) {
             default: return 'bg-gray-100 text-gray-700';
         }
     };
+
+    const handleDelete = () => {
+        setSelectedId(recipe.id);
+        onDeleteOpen();
+    }
 
   return (
     <tr className="hover:bg-gray-50/50 transition-colors">
@@ -71,8 +78,11 @@ function RecipeRow({ recipe }: RecipeRowProps) {
                                             <DropdownItem key="edit" startContent={<Edit className="h-4 w-4" />}>
                                                 Edit Recipe
                                             </DropdownItem>
-                                            <DropdownItem key="delete" className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
+                                            <DropdownItem onClick={handleDelete} key="delete" className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
                                                 Delete Recipe
+                                            </DropdownItem>
+                                            <DropdownItem key="update-image" className="text-orange-600" color="warning" startContent={<Image  className="h-4 w-4" />}>
+                                                Update Recipe Image
                                             </DropdownItem>
                                         </DropdownMenu>
                                     </Dropdown>

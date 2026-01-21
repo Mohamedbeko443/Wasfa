@@ -4,27 +4,35 @@ import RecipesTableError from './RecipesTableError';
 import RecipeRow from './RecipeRow';
 import { Recipe } from '@/common/types/Recipe';
 import { useState } from 'react';
-import { Pagination } from '@heroui/react';
+import { Pagination, useDisclosure } from '@heroui/react';
 import { sortType } from '@/features/home/types';
 import RecipesTableEmpty from './RecipesTableEmpty';
+import AlertModal from '../../components/AlertModal';
+import { useDeleteRecipe } from '../hooks/useDeleteRecipe';
 
 interface IRecipesTable {
     search: string;
     type: "premium" | undefined;
     sort: sortType;
+    onOpen: () => void;
 }
 
-const RecipesTable = ({ search, type, sort }: IRecipesTable) => {
+const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
     const [page, setPage] = useState<number>(1);
-
+    const [selectedId , setSelectedId] = useState<string | null>(null);
+    
     const { data, isError, isLoading, refetch } = useRecipes({ page , limit: 6, search, type, sortType: sort , sortBy:"name"});
     
+    
+    const { isOpen:isDeleteOpen, onOpen:onDeleteOpen, onOpenChange:onDeleteOpenChange } = useDisclosure();
+    const { deleteRecipe, isPending } = useDeleteRecipe();
+
 
     if (isLoading) return <RecipesTableSkeleton />
 
     if (isError) return <RecipesTableError onRetry={refetch} />
 
-    if (!data?.recipes?.length) return <RecipesTableEmpty onCreate={() => {}} />
+    if (!data?.recipes?.length) return <RecipesTableEmpty onCreate={onOpen} />
 
     return (
         <>
@@ -45,7 +53,7 @@ const RecipesTable = ({ search, type, sort }: IRecipesTable) => {
                         <tbody className="divide-y divide-gray-100">
                             {
                                 data?.recipes?.map((recipe: Recipe) => (
-                                    <RecipeRow key={recipe.id} recipe={recipe} />
+                                    <RecipeRow key={recipe.id} recipe={recipe} onDeleteOpen={onDeleteOpen} setSelectedId={setSelectedId} />
                                 ))
                             }
                         </tbody>
@@ -60,6 +68,20 @@ const RecipesTable = ({ search, type, sort }: IRecipesTable) => {
                     )
                 }
             </div>
+            {
+                selectedId && (
+                    <AlertModal
+                        isOpen={isDeleteOpen}
+                        onOpenChange={onDeleteOpenChange}
+                        title='Delete Recipe'
+                        message='Are you sure you want to delete this recipe?'
+                        confirmText='Delete'
+                        selectedId={selectedId}
+                        onConfirm={deleteRecipe}
+                        isPending={isPending}
+                    />
+                )
+            }
         </>
     );
 };

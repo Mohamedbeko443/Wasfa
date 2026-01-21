@@ -29,7 +29,7 @@ const RecipesPage = () => {
             </div>
 
             <RecipeFilters search={search} setSearch={setSearch} type={type} setType={setType} sort={sort} setSort={setSort} />
-            <RecipesTable search={search} type={type} sort={sort} />
+            <RecipesTable search={search} type={type} sort={sort} onOpen={onOpen} />
             <CreateRecipeModal isOpen={isOpen} onOpenChange={onOpenChange} />
         </div>
     );
