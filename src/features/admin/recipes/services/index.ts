@@ -14,7 +14,7 @@ type recipeDto = {
     image: File;
 }
 
-//create recipe 
+
 export const createRecipe = async (recipe: recipeDto) => {
     try {
         const formData = new FormData();
@@ -49,6 +49,27 @@ export const createRecipe = async (recipe: recipeDto) => {
 export const deleteRecipe = async (id: string) => {
     try {
         const response = await api.delete(`/recipes/${id}`);
+        return response.data;
+    } catch (error) {
+        if (isAxiosError(error)) {
+            throw error.response?.data;
+        }
+        throw error;
+    }
+};
+
+
+export const updateRecipeImage = async ({ id, image }: {id: string, image: File}) => {
+    try {
+        const formData = new FormData();
+        formData.append('image', image);
+
+        const response = await api.put(`/recipes/upload-image/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
         return response.data;
     } catch (error) {
         if (isAxiosError(error)) {

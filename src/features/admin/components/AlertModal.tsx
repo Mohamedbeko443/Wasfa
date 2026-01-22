@@ -4,8 +4,9 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Button,
+    Button
 } from "@heroui/react";
+
 
 interface AlertModalProps {
     isOpen: boolean;
@@ -34,7 +35,7 @@ function AlertModal({
 }: AlertModalProps) {
 
     const handleConfirm = () => {
-        onConfirm(selectedId!);   
+        onConfirm(selectedId!);
         onOpenChange(false);
     }
 

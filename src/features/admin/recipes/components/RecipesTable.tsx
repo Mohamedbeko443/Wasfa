@@ -9,7 +9,8 @@ import { sortType } from '@/features/home/types';
 import RecipesTableEmpty from './RecipesTableEmpty';
 import AlertModal from '../../components/AlertModal';
 import { useDeleteRecipe } from '../hooks/useDeleteRecipe';
-
+import UploadImageModal from './UploadImageModal';
+ 
 interface IRecipesTable {
     search: string;
     type: "premium" | undefined;
@@ -26,6 +27,9 @@ const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
     
     const { isOpen:isDeleteOpen, onOpen:onDeleteOpen, onOpenChange:onDeleteOpenChange } = useDisclosure();
     const { deleteRecipe, isPending } = useDeleteRecipe();
+
+    const { isOpen:isUploadOpen, onOpen:onUploadOpen, onOpenChange:onUploadOpenChange } = useDisclosure();
+    
 
 
     if (isLoading) return <RecipesTableSkeleton />
@@ -53,7 +57,7 @@ const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
                         <tbody className="divide-y divide-gray-100">
                             {
                                 data?.recipes?.map((recipe: Recipe) => (
-                                    <RecipeRow key={recipe.id} recipe={recipe} onDeleteOpen={onDeleteOpen} setSelectedId={setSelectedId} />
+                                    <RecipeRow key={recipe.id} recipe={recipe} onUploadOpen={onUploadOpen} onDeleteOpen={onDeleteOpen} setSelectedId={setSelectedId} />
                                 ))
                             }
                         </tbody>
@@ -77,8 +81,18 @@ const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
                         message='Are you sure you want to delete this recipe?'
                         confirmText='Delete'
                         selectedId={selectedId}
-                        onConfirm={deleteRecipe}
+                        onConfirm={(id) => deleteRecipe(id)}
                         isPending={isPending}
+                    />
+                )
+            }
+            {
+                selectedId && (
+                    <UploadImageModal
+                        isOpen={isUploadOpen}
+                        onOpenChange={onUploadOpenChange}
+                        selectedId={selectedId}
+                        setSelectedId={setSelectedId}
                     />
                 )
             }

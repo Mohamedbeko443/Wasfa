@@ -7,10 +7,11 @@ interface RecipeRowProps {
     recipe: Recipe;
     onDeleteOpen: () => void;
     setSelectedId: (id: string) => void;
+    onUploadOpen: () => void;
 }
 
 
-function RecipeRow({ recipe , onDeleteOpen , setSelectedId }: RecipeRowProps) {
+function RecipeRow({ recipe , onDeleteOpen , setSelectedId , onUploadOpen }: RecipeRowProps) {
 
 
    const getLevelColor = (level: string) => {
@@ -25,6 +26,11 @@ function RecipeRow({ recipe , onDeleteOpen , setSelectedId }: RecipeRowProps) {
     const handleDelete = () => {
         setSelectedId(recipe.id);
         onDeleteOpen();
+    }
+
+    const handleUpload = () => {
+        setSelectedId(recipe.id);
+        onUploadOpen();
     }
 
   return (
@@ -81,7 +87,7 @@ function RecipeRow({ recipe , onDeleteOpen , setSelectedId }: RecipeRowProps) {
                                             <DropdownItem onClick={handleDelete} key="delete" className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
                                                 Delete Recipe
                                             </DropdownItem>
-                                            <DropdownItem key="update-image" className="text-orange-600" color="warning" startContent={<Image  className="h-4 w-4" />}>
+                                            <DropdownItem onClick={handleUpload} key="update-image" className="text-orange-600" color="warning" startContent={<Image  className="h-4 w-4" />}>
                                                 Update Recipe Image
                                             </DropdownItem>
                                         </DropdownMenu>
