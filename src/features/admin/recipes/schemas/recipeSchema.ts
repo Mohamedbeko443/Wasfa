@@ -23,3 +23,7 @@ export const createRecipeSchema = z.object({
 });
 
 export type CreateRecipeSchema = z.infer<typeof createRecipeSchema>;
+
+export const updateRecipeSchema = createRecipeSchema.omit({ image: true });
+
+export type UpdateRecipeSchema = z.infer<typeof updateRecipeSchema>;

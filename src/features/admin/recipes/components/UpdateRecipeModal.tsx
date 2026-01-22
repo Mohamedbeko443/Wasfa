@@ -12,22 +12,50 @@ import {
     Chip,
     Checkbox
 } from "@heroui/react";
-import { useState } from "react";
-import { useCreateRecipe } from "../hooks/useCreateRecipe";
+import { useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createRecipeSchema, CreateRecipeSchema } from "../schemas/recipeSchema";
 import { Plus, X } from "lucide-react";
+import { Recipe } from "@/common/types/Recipe";
+import { updateRecipeSchema, UpdateRecipeSchema } from "../schemas/recipeSchema";
+import { useUpdateRecipe } from "../hooks/useUpdateRecipe";
 
-interface CreateRecipeModalProps {
+interface UpdateRecipeModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
+    recipe?: Recipe;
 }
 
 const CONSTANT_LEVELS = ["Easy", "Intermediate", "Hard"];
 
-export default function CreateRecipeModal({ isOpen, onOpenChange }: CreateRecipeModalProps) {
-    const { addRecipe, isPending } = useCreateRecipe();
+export default function UpdateRecipeModal({ isOpen, onOpenChange, recipe }: UpdateRecipeModalProps) {
+    
+
+    
+    const defaultValues: UpdateRecipeSchema = useMemo(() => {
+        if (recipe) {
+            return {
+                name: recipe.name,
+                description: recipe.description,
+                ingredients: recipe.ingredients,
+                instructions: recipe.instructions,
+                level: recipe.level,
+                cookTime: recipe.cookTime,
+                servings: recipe.servings,
+                premium: recipe.premium,
+            };
+        }
+        return {
+            name: "",
+            description: "",
+            ingredients: [],
+            instructions: [],
+            level: "Easy", // Default level
+            cookTime: 0,
+            servings: 1,
+            premium: false,
+        };
+    }, [recipe]);
 
     const {
         control,
@@ -36,20 +64,12 @@ export default function CreateRecipeModal({ isOpen, onOpenChange }: CreateRecipe
         watch,
         reset,
         formState: { errors },
-    } = useForm<CreateRecipeSchema>({
-        resolver: zodResolver(createRecipeSchema) as any,
-        defaultValues: {
-            name: "",
-            description: "",
-            ingredients: [],
-            instructions: [],
-            level: "Easy",
-            servings: 1,
-            premium: false,
-        },
+    } = useForm<UpdateRecipeSchema>({
+        resolver: zodResolver(updateRecipeSchema) as any,
+        values: defaultValues, 
     });
 
-    // Local state for array inputs
+    
     const [ingredientInput, setIngredientInput] = useState("");
     const [instructionInput, setInstructionInput] = useState("");
 
@@ -58,45 +78,61 @@ export default function CreateRecipeModal({ isOpen, onOpenChange }: CreateRecipe
 
     const handleAddIngredient = () => {
         if (!ingredientInput.trim()) return;
-        setValue("ingredients", [...(ingredients || []), ingredientInput.trim()]);
+        setValue("ingredients", [...(ingredients || []), ingredientInput.trim()], { shouldDirty: true });
         setIngredientInput("");
     };
 
     const handleRemoveIngredient = (index: number) => {
-        setValue("ingredients", ingredients.filter((_, i) => i !== index));
+        setValue("ingredients", ingredients.filter((_, i) => i !== index), { shouldDirty: true });
     };
 
     const handleAddInstruction = () => {
         if (!instructionInput.trim()) return;
-        setValue("instructions", [...(instructions || []), instructionInput.trim()]);
+        setValue("instructions", [...(instructions || []), instructionInput.trim()], { shouldDirty: true });
         setInstructionInput("");
     };
 
     const handleRemoveInstruction = (index: number) => {
-        setValue("instructions", instructions.filter((_, i) => i !== index));
+        setValue("instructions", instructions.filter((_, i) => i !== index), { shouldDirty: true });
     };
 
-    const onSubmit = (data: CreateRecipeSchema) => {
-        addRecipe(data, {
+    const { updateRecipe , isPending} = useUpdateRecipe();
+
+    const onSubmit = (data: UpdateRecipeSchema) => {
+        const recipeData = {
+            name: data.name,
+            description: data.description,
+            ingredients: data.ingredients.join(','),
+            instructions: data.instructions.join(','),
+            level: data.level,
+            cookTime: data.cookTime,
+            servings: data.servings,
+            premium: data.premium,
+        }
+        updateRecipe({
+            id: recipe!.id,
+            recipe: recipeData 
+        } , {
             onSuccess: () => {
-                onOpenChange(false);
                 reset();
-                setIngredientInput("");
-                setInstructionInput("");
+                onOpenChange(false);
             }
-        });
+        })
+    };
+
+    const handleClose = () => {
+        reset();
+        setIngredientInput("");
+        setInstructionInput("");
+        onOpenChange(false);
     };
 
     return (
         <Modal
             isOpen={isOpen}
             onOpenChange={(open) => {
-                if (!open) {
-                    reset();
-                    setIngredientInput("");
-                    setInstructionInput("");
-                }
-                onOpenChange(open);
+                if (!open) handleClose();
+                else onOpenChange(open);
             }}
             size="3xl"
             scrollBehavior="inside"
@@ -104,9 +140,9 @@ export default function CreateRecipeModal({ isOpen, onOpenChange }: CreateRecipe
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="flex flex-col gap-1">Create New Recipe</ModalHeader>
+                        <ModalHeader className="flex flex-col gap-1">Update Recipe</ModalHeader>
                         <ModalBody>
-                            <form id="create-recipe-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                            <form id="update-recipe-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                                 <Controller
                                     name="name"
                                     control={control}
@@ -274,29 +310,10 @@ export default function CreateRecipeModal({ isOpen, onOpenChange }: CreateRecipe
                                         </Checkbox>
                                     )}
                                 />
-
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-small font-medium text-foreground">Recipe Image <span className="text-danger">*</span></label>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            const file = e.target.files?.[0];
-                                            setValue("image", file, { shouldValidate: true });
-                                        }}
-                                        className="block w-full text-sm text-gray-500
-                                            file:mr-4 file:py-2 file:px-4
-                                            file:rounded-full file:border-0
-                                            file:text-sm file:font-semibold
-                                            file:bg-orange-50 file:text-orange-700
-                                            hover:file:bg-orange-100"
-                                    />
-                                    {errors.image && <p className="text-tiny text-danger">{errors.image.message as string}</p>}
-                                </div>
                             </form>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="danger" variant="light" onPress={onClose}>
+                            <Button color="danger" variant="light" onPress={handleClose}>
                                 Cancel
                             </Button>
                             <Button
@@ -304,7 +321,7 @@ export default function CreateRecipeModal({ isOpen, onOpenChange }: CreateRecipe
                                 onPress={() => handleSubmit(onSubmit)()}
                                 disabled={isPending}
                             >
-                                {isPending ? 'Processing...' : 'Create Recipe'}
+                                Update Recipe
                             </Button>
                         </ModalFooter>
                     </>

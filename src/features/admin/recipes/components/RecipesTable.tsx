@@ -10,6 +10,7 @@ import RecipesTableEmpty from './RecipesTableEmpty';
 import AlertModal from '../../components/AlertModal';
 import { useDeleteRecipe } from '../hooks/useDeleteRecipe';
 import UploadImageModal from './UploadImageModal';
+import UpdateRecipeModal from './UpdateRecipeModal';
  
 interface IRecipesTable {
     search: string;
@@ -21,6 +22,7 @@ interface IRecipesTable {
 const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
     const [page, setPage] = useState<number>(1);
     const [selectedId , setSelectedId] = useState<string | null>(null);
+    const [selectedRecipe , setSelectedRecipe] = useState<Recipe | null>(null);
     
     const { data, isError, isLoading, refetch } = useRecipes({ page , limit: 6, search, type, sortType: sort , sortBy:"name"});
     
@@ -30,6 +32,7 @@ const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
 
     const { isOpen:isUploadOpen, onOpen:onUploadOpen, onOpenChange:onUploadOpenChange } = useDisclosure();
     
+    const { isOpen:isUpdateOpen, onOpen:onUpdateOpen, onOpenChange:onUpdateOpenChange } = useDisclosure();
 
 
     if (isLoading) return <RecipesTableSkeleton />
@@ -57,7 +60,7 @@ const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
                         <tbody className="divide-y divide-gray-100">
                             {
                                 data?.recipes?.map((recipe: Recipe) => (
-                                    <RecipeRow key={recipe.id} recipe={recipe} onUploadOpen={onUploadOpen} onDeleteOpen={onDeleteOpen} setSelectedId={setSelectedId} />
+                                    <RecipeRow key={recipe.id} onUpdateOpen={onUpdateOpen} setSelectedRecipe={setSelectedRecipe} recipe={recipe} onUploadOpen={onUploadOpen} onDeleteOpen={onDeleteOpen} setSelectedId={setSelectedId} />
                                 ))
                             }
                         </tbody>
@@ -93,6 +96,16 @@ const RecipesTable = ({ search, type, sort, onOpen }: IRecipesTable) => {
                         onOpenChange={onUploadOpenChange}
                         selectedId={selectedId}
                         setSelectedId={setSelectedId}
+                    />
+                )
+            }
+
+            {
+                selectedRecipe && (
+                    <UpdateRecipeModal
+                        isOpen={isUpdateOpen}
+                        onOpenChange={onUpdateOpenChange}
+                        recipe={selectedRecipe}
                     />
                 )
             }

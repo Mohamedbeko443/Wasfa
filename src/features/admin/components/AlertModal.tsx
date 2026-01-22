@@ -11,7 +11,7 @@ import {
 interface AlertModalProps {
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
-    onConfirm: (id: string) => void;
+    onConfirm: (id: string , options?: { onSuccess: () => void }) => void;
     title?: string;
     message: string;
     confirmText?: string;
@@ -32,12 +32,16 @@ function AlertModal({
     confirmColor = "danger",
     isPending = false,
     selectedId,
+    
 }: AlertModalProps) {
 
     const handleConfirm = () => {
         onConfirm(selectedId!);
         onOpenChange(false);
     }
+
+
+    
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -62,7 +66,7 @@ function AlertModal({
                                 onPress={handleConfirm}
                                 disabled={isPending}
                                 color={confirmColor}
-                                className="font-semibold"
+                                className="font-semibold text-white disabled:bg-gray-500 disabled:cursor-not-allowed"
                             >
                                 {isPending ? "Processing..." : confirmText}
                             </Button>

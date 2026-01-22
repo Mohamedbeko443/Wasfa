@@ -8,10 +8,12 @@ interface RecipeRowProps {
     onDeleteOpen: () => void;
     setSelectedId: (id: string) => void;
     onUploadOpen: () => void;
+    onUpdateOpen: () => void;
+    setSelectedRecipe: (recipe: Recipe) => void;
 }
 
 
-function RecipeRow({ recipe , onDeleteOpen , setSelectedId , onUploadOpen }: RecipeRowProps) {
+function RecipeRow({ recipe , onDeleteOpen , setSelectedId , onUploadOpen , onUpdateOpen , setSelectedRecipe }: RecipeRowProps) {
 
 
    const getLevelColor = (level: string) => {
@@ -31,6 +33,11 @@ function RecipeRow({ recipe , onDeleteOpen , setSelectedId , onUploadOpen }: Rec
     const handleUpload = () => {
         setSelectedId(recipe.id);
         onUploadOpen();
+    }
+
+    const handleUpdate = () => {
+        setSelectedRecipe(recipe);
+        onUpdateOpen();
     }
 
   return (
@@ -81,7 +88,7 @@ function RecipeRow({ recipe , onDeleteOpen , setSelectedId , onUploadOpen }: Rec
                                             </Button>
                                         </DropdownTrigger>
                                         <DropdownMenu aria-label="Recipe Actions">
-                                            <DropdownItem key="edit" startContent={<Edit className="h-4 w-4" />}>
+                                            <DropdownItem onClick={handleUpdate} key="edit" startContent={<Edit className="h-4 w-4" />}>
                                                 Edit Recipe
                                             </DropdownItem>
                                             <DropdownItem onClick={handleDelete} key="delete" className="text-red-600" color="danger" startContent={<Trash2 className="h-4 w-4" />}>
